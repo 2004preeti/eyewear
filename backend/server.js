@@ -19,7 +19,9 @@ app.get('/', (req, res) => {
   res.send('Eyewear Backend API with Supabase is Running Successfully!');
 });
 
-// GET: Sabhi products
+// -------------------------------------------------------------
+// GET: Sabhi products fetch karein
+// -------------------------------------------------------------
 app.get('/api/products', async (req, res) => {
   try {
     const { data, error } = await supabase.from('products').select('*');
@@ -34,7 +36,9 @@ app.get('/api/products', async (req, res) => {
   }
 });
 
+// -------------------------------------------------------------
 // POST: Naya product add karein (Includes 'audience' field)
+// -------------------------------------------------------------
 app.post('/api/products', async (req, res) => {
   try {
     const { name, price, description, images, slug, category, audience } =
@@ -45,18 +49,18 @@ app.post('/api/products', async (req, res) => {
       .insert([
         {
           name,
-          price,
+          price: Number(price),
           description,
           images,
           slug,
           category,
-          audience: audience || 'unisex', // Default fallback to 'unisex'
+          audience: audience || 'unisex',
         },
       ])
       .select();
 
     if (error) {
-      console.error('Supabase POST Error:', error);
+      console.error('Supabase POST Error:', error.message);
       return res.status(400).json({ error: error.message });
     }
 
@@ -67,31 +71,41 @@ app.post('/api/products', async (req, res) => {
   }
 });
 
+// -------------------------------------------------------------
 // UPDATE: Product update karein
+// -------------------------------------------------------------
 app.put('/api/products/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const { name, price, description, images, slug, category, audience } =
       req.body;
 
+    // Check if ID is numeric or string/UUID
+    const queryId = !isNaN(Number(id)) ? Number(id) : id;
+
     const { data, error } = await supabase
       .from('products')
       .update({
         name,
-        price,
+        price: Number(price),
         description,
         images,
         slug,
         category,
         audience: audience || 'unisex',
       })
-      .eq('id', id)
+      .eq('id', queryId)
       .select();
 
-    if (error) return res.status(400).json({ error: error.message });
+    if (error) {
+      console.error('Supabase PUT Error:', error.message);
+      return res.status(400).json({ error: error.message });
+    }
+
     if (!data || data.length === 0) {
       return res.status(404).json({ error: 'Product not found' });
     }
+
     res.status(200).json(data);
   } catch (err) {
     console.error('Server Update Error:', err);
@@ -99,25 +113,40 @@ app.put('/api/products/:id', async (req, res) => {
   }
 });
 
-// DELETE: Product delete karein
+// -------------------------------------------------------------
+// DELETE: Product delete karein (Fixed for Integer & UUID IDs)
+// -------------------------------------------------------------
 app.delete('/api/products/:id', async (req, res) => {
   try {
     const { id } = req.params;
+    console.log(`[DELETE REQUEST] Received ID: ${id}`);
+
+    // Fallback: Check if ID should be passed as Number or String
+    const queryId = !isNaN(Number(id)) ? Number(id) : id;
 
     const { data, error } = await supabase
       .from('products')
       .delete()
-      .eq('id', id)
+      .eq('id', queryId)
       .select();
 
-    if (error) return res.status(400).json({ error: error.message });
-    if (!data || data.length === 0) {
-      return res.status(404).json({ error: 'Product not found' });
+    if (error) {
+      console.error('Supabase Delete Error:', error.message);
+      return res.status(400).json({ error: error.message });
     }
-    res.status(200).json({ message: 'Product deleted', deleted: data });
+
+    if (!data || data.length === 0) {
+      console.warn(`Product with ID ${id} not found in database.`);
+      return res.status(404).json({ error: 'Product not found with given ID' });
+    }
+
+    console.log(`[DELETE SUCCESS] Product ID ${id} deleted.`);
+    res
+      .status(200)
+      .json({ message: 'Product deleted successfully', deleted: data });
   } catch (err) {
-    console.error('Server Delete Error:', err);
-    res.status(500).json({ error: 'Server Error' });
+    console.error('Server Delete Catch Error:', err);
+    res.status(500).json({ error: 'Server Internal Error during deletion' });
   }
 });
 
