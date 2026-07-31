@@ -11,7 +11,7 @@ const CATEGORIES = [
 ];
 
 const AUDIENCE_OPTIONS = [
-  { label: 'All / Unisex', value: 'unisex' },
+  { label: 'All / Gender', value: 'unisex' },
   { label: 'Men', value: 'men' },
   { label: 'Women', value: 'women' },
   { label: 'Kids', value: 'kids' },
@@ -138,7 +138,7 @@ export default function AdminPage() {
           description: '',
           slug: '',
           category: '',
-          audience: 'unisex',
+          audience: 'gender',
         });
         setImageFiles([]);
         fetchProducts();
