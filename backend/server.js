@@ -91,7 +91,7 @@ app.put('/api/products/:id', async (req, res) => {
         images,
         slug,
         category,
-        audience: audience || 'unisex',
+        audience: audience || 'all',
       })
       .eq('id', queryId)
       .select();
