@@ -1,4 +1,4 @@
-// ⚠️ IMPORTANT: Top par dotenv config hona zaroori hai
+// ⚠️ Top par dotenv config hona zaroori hai
 require('dotenv').config();
 
 const express = require('express');
@@ -7,7 +7,7 @@ const supabase = require('./lib/supabase');
 
 const app = express();
 
-// 1. CORS Allowed
+// 1. CORS Allowed (Production & Localhost Both)
 app.use(cors());
 
 // 2. Base64 Images ke liye Body Limit 50mb
@@ -34,14 +34,25 @@ app.get('/api/products', async (req, res) => {
   }
 });
 
-// POST: Naya product
+// POST: Naya product add karein (Includes 'audience' field)
 app.post('/api/products', async (req, res) => {
   try {
-    const { name, price, description, images, slug, category } = req.body;
+    const { name, price, description, images, slug, category, audience } =
+      req.body;
 
     const { data, error } = await supabase
       .from('products')
-      .insert([{ name, price, description, images, slug, category }])
+      .insert([
+        {
+          name,
+          price,
+          description,
+          images,
+          slug,
+          category,
+          audience: audience || 'unisex', // Default fallback to 'unisex'
+        },
+      ])
       .select();
 
     if (error) {
@@ -56,15 +67,24 @@ app.post('/api/products', async (req, res) => {
   }
 });
 
-// UPDATE: Product update
+// UPDATE: Product update karein
 app.put('/api/products/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, price, description, images, slug, category } = req.body;
+    const { name, price, description, images, slug, category, audience } =
+      req.body;
 
     const { data, error } = await supabase
       .from('products')
-      .update({ name, price, description, images, slug, category })
+      .update({
+        name,
+        price,
+        description,
+        images,
+        slug,
+        category,
+        audience: audience || 'unisex',
+      })
       .eq('id', id)
       .select();
 
@@ -74,11 +94,12 @@ app.put('/api/products/:id', async (req, res) => {
     }
     res.status(200).json(data);
   } catch (err) {
+    console.error('Server Update Error:', err);
     res.status(500).json({ error: 'Server Error' });
   }
 });
 
-// DELETE: Product delete
+// DELETE: Product delete karein
 app.delete('/api/products/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -95,9 +116,11 @@ app.delete('/api/products/:id', async (req, res) => {
     }
     res.status(200).json({ message: 'Product deleted', deleted: data });
   } catch (err) {
+    console.error('Server Delete Error:', err);
     res.status(500).json({ error: 'Server Error' });
   }
 });
 
-const PORT = 5000;
+// 🚀 Render Deployment Dynamic PORT Support
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
