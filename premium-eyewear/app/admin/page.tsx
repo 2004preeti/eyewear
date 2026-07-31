@@ -24,7 +24,7 @@ export default function AdminPage() {
     description: '',
     slug: '',
     category: '',
-    audience: 'unisex', // Women / Men / Kids
+    audience: 'unisex',
   });
 
   const [loading, setLoading] = useState(false);
@@ -32,7 +32,7 @@ export default function AdminPage() {
   const [products, setProducts] = useState<any[]>([]);
   const [fetching, setFetching] = useState(true);
 
-  // 1. Live Products Fetch Karein (Table Display & Delete ke liye)
+  // 1. Live Products Fetch Karein
   const fetchProducts = async () => {
     try {
       const res = await fetch(
@@ -141,7 +141,7 @@ export default function AdminPage() {
           audience: 'unisex',
         });
         setImageFiles([]);
-        fetchProducts(); // Refresh list after add
+        fetchProducts();
       } else {
         alert(
           `Failed to add product: ${responseData.error || 'Unknown Error'}`,
@@ -155,29 +155,39 @@ export default function AdminPage() {
     }
   };
 
-  // 3. 🗑️ DELETE PRODUCT FUNCTION
-  const handleDeleteProduct = async (id: string, name: string) => {
+  // 3. 🗑️ FIXED DELETE PRODUCT FUNCTION
+  const handleDeleteProduct = async (product: any) => {
+    const productId = product.id || product._id;
+
+    if (!productId) {
+      alert('Error: Product ID nahi mila!');
+      return;
+    }
+
     const confirmDelete = confirm(
-      `Kya aap "${name}" ko sach me delete karna chahte hain?`,
+      `Kya aap "${product.name}" ko sach me delete karna chahte hain?`,
     );
     if (!confirmDelete) return;
 
     try {
       const res = await fetch(
-        `https://eyewear-3zv6.onrender.com/api/products/${id}`,
+        `https://eyewear-3zv6.onrender.com/api/products/${productId}`,
         {
           method: 'DELETE',
         },
       );
 
+      const responseData = await res.json();
+
       if (res.ok) {
         alert('✅ Product Deleted Successfully!');
-        // UI se product remove karein
         setProducts((prev) =>
-          prev.filter((item) => (item.id || item._id) !== id),
+          prev.filter((item) => (item.id || item._id) !== productId),
         );
       } else {
-        alert('Failed to delete product!');
+        alert(
+          `Failed to delete: ${responseData.error || 'Unknown Backend Error'}`,
+        );
       }
     } catch (error) {
       console.error('Delete Error:', error);
@@ -252,7 +262,7 @@ export default function AdminPage() {
                 </select>
               </div>
 
-              {/* 🧑‍🤝‍🧑 AUDIENCE DROPDOWN (Men / Women / Kids) */}
+              {/* AUDIENCE DROPDOWN */}
               <div className="flex flex-col gap-1">
                 <label className="text-sm font-bold text-gray-800">
                   Target Audience
@@ -417,9 +427,9 @@ export default function AdminPage() {
                       </div>
                     </div>
 
-                    {/* 🗑️ Delete Button */}
+                    {/* 🗑️ Updated Delete Button */}
                     <button
-                      onClick={() => handleDeleteProduct(id, item.name)}
+                      onClick={() => handleDeleteProduct(item)}
                       className="bg-red-50 hover:bg-red-500 text-red-600 hover:text-white border border-red-200 px-4 py-2 rounded-xl text-sm font-bold transition-all shadow-sm flex items-center gap-1.5 shrink-0"
                     >
                       <svg
