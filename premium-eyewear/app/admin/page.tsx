@@ -155,12 +155,13 @@ export default function AdminPage() {
     }
   };
 
-  // 3. 🗑️ FIXED DELETE PRODUCT FUNCTION
+  // 3. 🗑️ GUARANTEED DELETE PRODUCT FUNCTION
   const handleDeleteProduct = async (product: any) => {
-    const productId = product.id || product._id;
+    // Check all possible primary key fields from Supabase/DB
+    const productId = product.id || product._id || product.slug;
 
-    if (!productId) {
-      alert('Error: Product ID nahi mila!');
+    if (!productId || productId === 'undefined') {
+      alert('Error: Valid Product ID nahi mila!');
       return;
     }
 
@@ -182,7 +183,9 @@ export default function AdminPage() {
       if (res.ok) {
         alert('✅ Product Deleted Successfully!');
         setProducts((prev) =>
-          prev.filter((item) => (item.id || item._id) !== productId),
+          prev.filter(
+            (item) => (item.id || item._id || item.slug) !== productId,
+          ),
         );
       } else {
         alert(
@@ -390,8 +393,8 @@ export default function AdminPage() {
             </p>
           ) : (
             <div className="divide-y divide-gray-100 max-h-[500px] overflow-y-auto pr-2">
-              {products.map((item: any) => {
-                const id = item.id || item._id;
+              {products.map((item: any, index: number) => {
+                const keyId = item.id || item._id || item.slug || index;
                 const thumb =
                   item.images && item.images.length > 0
                     ? item.images[0]
@@ -399,7 +402,7 @@ export default function AdminPage() {
 
                 return (
                   <div
-                    key={id}
+                    key={keyId}
                     className="py-4 flex items-center justify-between gap-4"
                   >
                     <div className="flex items-center gap-4">
@@ -427,7 +430,7 @@ export default function AdminPage() {
                       </div>
                     </div>
 
-                    {/* 🗑️ Updated Delete Button */}
+                    {/* 🗑️ Delete Button */}
                     <button
                       onClick={() => handleDeleteProduct(item)}
                       className="bg-red-50 hover:bg-red-500 text-red-600 hover:text-white border border-red-200 px-4 py-2 rounded-xl text-sm font-bold transition-all shadow-sm flex items-center gap-1.5 shrink-0"

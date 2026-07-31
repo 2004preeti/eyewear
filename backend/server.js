@@ -80,7 +80,6 @@ app.put('/api/products/:id', async (req, res) => {
     const { name, price, description, images, slug, category, audience } =
       req.body;
 
-    // Check if ID is numeric or string/UUID
     const queryId = !isNaN(Number(id)) ? Number(id) : id;
 
     const { data, error } = await supabase
@@ -114,21 +113,36 @@ app.put('/api/products/:id', async (req, res) => {
 });
 
 // -------------------------------------------------------------
-// DELETE: Product delete karein (Fixed for Integer & UUID IDs)
+// DELETE: Product delete karein (Multi-column Safe Matching)
 // -------------------------------------------------------------
 app.delete('/api/products/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(`[DELETE REQUEST] Received ID: ${id}`);
+    console.log(`[DELETE REQUEST] Received Param: ${id}`);
 
-    // Fallback: Check if ID should be passed as Number or String
     const queryId = !isNaN(Number(id)) ? Number(id) : id;
 
-    const { data, error } = await supabase
+    // 1. Try deleting by 'id'
+    let { data, error } = await supabase
       .from('products')
       .delete()
       .eq('id', queryId)
       .select();
+
+    // 2. If 'id' column fails or no rows deleted, try matching with 'slug'
+    if ((error || !data || data.length === 0) && id) {
+      console.log(`Fallback: Attempting delete by slug '${id}'...`);
+      const fallback = await supabase
+        .from('products')
+        .delete()
+        .eq('slug', id)
+        .select();
+
+      if (!fallback.error && fallback.data && fallback.data.length > 0) {
+        data = fallback.data;
+        error = null;
+      }
+    }
 
     if (error) {
       console.error('Supabase Delete Error:', error.message);
@@ -136,11 +150,11 @@ app.delete('/api/products/:id', async (req, res) => {
     }
 
     if (!data || data.length === 0) {
-      console.warn(`Product with ID ${id} not found in database.`);
-      return res.status(404).json({ error: 'Product not found with given ID' });
+      console.warn(`Product with Param '${id}' not found in database.`);
+      return res.status(404).json({ error: 'Product not found' });
     }
 
-    console.log(`[DELETE SUCCESS] Product ID ${id} deleted.`);
+    console.log(`[DELETE SUCCESS] Product deleted:`, data);
     res
       .status(200)
       .json({ message: 'Product deleted successfully', deleted: data });
