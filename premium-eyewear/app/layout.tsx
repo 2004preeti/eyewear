@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-// 1. Apne component ko import karein
+import Navbar from '@/components/Navbar'; // Navbar import kiya gaya
 import FloatingWhatsApp from '@/components/FloatingWhatsApp';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -21,10 +21,13 @@ export default function RootLayout({
       <body
         className={`${inter.className} bg-white dark:bg-black text-black dark:text-white min-h-screen flex flex-col`}
       >
-        {/* Yahan aapke saare pages load honge */}
-        {children}
+        {/* Navbar yahan globally dikhai dega */}
+        <Navbar />
 
-        {/* 2. Button ko yahan call kar dein */}
+        {/* pt-24 se fixed header ke niche ka content hidden hone se bachega */}
+        <main className="flex-grow pt-24 sm:pt-28">{children}</main>
+
+        {/* Floating WhatsApp Button */}
         <FloatingWhatsApp />
       </body>
     </html>
