@@ -1,33 +1,109 @@
-import { MapPin, Phone, Clock, Navigation } from 'lucide-react';
+'use client';
+
+import { useState } from 'react';
+import Image from 'next/image';
+import {
+  MapPin,
+  Phone,
+  Clock,
+  Navigation,
+  Sparkles,
+  Copy,
+  Check,
+  ShieldCheck,
+  ExternalLink,
+} from 'lucide-react';
 
 export default function StoreLocatorPage() {
+  const [copied, setCopied] = useState(false);
+
+  const fullAddress =
+    'Shop No. 12, Ground Floor, Noida One Building, Sector 62, Noida, Uttar Pradesh - 201301';
+
+  const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+    'Noida One Building Sector 62 Noida',
+  )}`;
+
+  const handleCopyAddress = () => {
+    navigator.clipboard.writeText(fullAddress);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   return (
-    <div className="min-h-screen bg-white dark:bg-black pt-28 pb-20 px-4">
+    <div className="min-h-screen bg-slate-50 dark:bg-zinc-950 text-slate-900 dark:text-white pt-24 sm:pt-28 pb-20 px-4 sm:px-6">
       <div className="container mx-auto max-w-6xl">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <h1 className="text-5xl font-black tracking-tighter mb-4">
-            Find Our Store
+        {/* Header Section */}
+        <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16 space-y-3">
+          <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 font-extrabold text-xs uppercase tracking-widest border border-amber-500/20">
+            <Sparkles size={14} /> Flagship Optical Experience
+          </span>
+          <h1 className="text-4xl sm:text-5xl font-black tracking-tight leading-tight">
+            Visit Our <span className="text-amber-500">Flagship Store</span>
           </h1>
-          <p className="text-gray-500 text-lg">
-            Visit us at our flagship location for a personalized eye-check
-            experience.
+          <p className="text-slate-500 dark:text-zinc-400 text-sm sm:text-base font-medium">
+            Walk in for a comprehensive computerised eye screening, premium
+            frame fitting, and personal lens consulting.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          {/* Store Details */}
-          <div className="space-y-8">
-            <div className="bg-gray-50 dark:bg-zinc-900 p-8 rounded-3xl border border-gray-100 dark:border-zinc-800">
+        {/* Main Grid Layout */}
+        <div className="grid lg:grid-cols-12 gap-8 items-start">
+          {/* LEFT SIDE: STORE INFOS & HERO IMAGE */}
+          <div className="lg:col-span-6 space-y-6">
+            {/* Store Showcase Image Card */}
+            <div className="relative h-64 sm:h-72 w-full rounded-3xl overflow-hidden border border-slate-200 dark:border-zinc-800 shadow-xl group bg-slate-900">
+              <Image
+                src="https://images.unsplash.com/photo-1556740758-90de374c12ad?q=80&w=1200&auto=format&fit=crop"
+                alt="Sunrise Optical Flagship Store Showroom"
+                fill
+                className="object-cover group-hover:scale-105 transition-transform duration-700"
+                priority
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+
+              {/* Floating Live Status Badge */}
+              <div className="absolute top-4 left-4 flex items-center gap-2 bg-emerald-500/90 text-white backdrop-blur-md px-3.5 py-1.5 rounded-full text-xs font-bold shadow-md">
+                <span className="w-2 h-2 rounded-full bg-white animate-ping" />
+                <span>Open Today • Closes 9:00 PM</span>
+              </div>
+
+              {/* Bottom Overlay Info */}
+              <div className="absolute bottom-4 left-4 right-4 text-white space-y-1">
+                <h2 className="text-2xl font-black tracking-tight">
+                  Sunrise Optical
+                </h2>
+                <p className="text-xs text-slate-200 font-medium">
+                  Sector 62, Noida Flagship Studio
+                </p>
+              </div>
+            </div>
+
+            {/* Address Card */}
+            <div className="bg-white dark:bg-zinc-900 p-6 sm:p-7 rounded-3xl border border-slate-200/80 dark:border-zinc-800 shadow-sm hover:shadow-md transition-all">
               <div className="flex items-start gap-4">
-                <div className="p-3 bg-yellow-100 text-yellow-600 rounded-full">
-                  <MapPin size={24} />
+                <div className="p-3 bg-amber-500/10 text-amber-600 dark:text-amber-400 rounded-2xl shrink-0 border border-amber-500/20">
+                  <MapPin size={26} />
                 </div>
-                <div>
-                  <h3 className="text-2xl font-bold mb-2">
-                    Sunrise Optical - Main Branch
-                  </h3>
-                  <p className="text-gray-600 dark:text-gray-400">
+                <div className="flex-1 space-y-2">
+                  <div className="flex items-center justify-between gap-2">
+                    <h3 className="text-lg font-bold">Store Address</h3>
+                    <button
+                      onClick={handleCopyAddress}
+                      className="flex items-center gap-1 text-xs font-semibold text-amber-600 dark:text-amber-400 hover:underline"
+                    >
+                      {copied ? (
+                        <>
+                          <Check size={14} /> Copied!
+                        </>
+                      ) : (
+                        <>
+                          <Copy size={14} /> Copy
+                        </>
+                      )}
+                    </button>
+                  </div>
+                  <p className="text-slate-600 dark:text-zinc-300 text-sm leading-relaxed font-medium">
                     Shop No. 12, Ground Floor, Noida One Building, <br />
                     Sector 62, Noida, Uttar Pradesh - 201301
                   </p>
@@ -35,38 +111,78 @@ export default function StoreLocatorPage() {
               </div>
             </div>
 
-            <div className="flex gap-4">
-              <div className="flex-1 bg-gray-50 dark:bg-zinc-900 p-6 rounded-2xl flex items-center gap-3">
-                <Clock className="text-yellow-500" />
+            {/* Timing & Phone Grid */}
+            <div className="grid sm:grid-cols-2 gap-4">
+              <div className="bg-white dark:bg-zinc-900 p-5 rounded-2xl border border-slate-200/80 dark:border-zinc-800 flex items-center gap-3.5">
+                <div className="p-2.5 bg-amber-500/10 text-amber-600 rounded-xl">
+                  <Clock size={20} />
+                </div>
                 <div>
-                  <p className="font-bold">Opening Hours</p>
-                  <p className="text-sm text-gray-500">10:00 AM - 9:00 PM</p>
+                  <p className="text-xs font-extrabold text-slate-400 uppercase tracking-wider">
+                    Store Hours
+                  </p>
+                  <p className="text-sm font-bold text-slate-800 dark:text-slate-100">
+                    10:00 AM - 9:00 PM
+                  </p>
                 </div>
               </div>
-              <div className="flex-1 bg-gray-50 dark:bg-zinc-900 p-6 rounded-2xl flex items-center gap-3">
-                <Phone className="text-yellow-500" />
-                <div>
-                  <p className="font-bold">Call Us</p>
-                  <p className="text-sm text-gray-500">+91 98765 43210</p>
+
+              <a
+                href="tel:+919876543210"
+                className="bg-white dark:bg-zinc-900 p-5 rounded-2xl border border-slate-200/80 dark:border-zinc-800 flex items-center gap-3.5 hover:border-amber-500 transition-colors group"
+              >
+                <div className="p-2.5 bg-amber-500/10 text-amber-600 rounded-xl group-hover:bg-amber-500 group-hover:text-black transition-colors">
+                  <Phone size={20} />
                 </div>
-              </div>
+                <div>
+                  <p className="text-xs font-extrabold text-slate-400 uppercase tracking-wider">
+                    Phone Number
+                  </p>
+                  <p className="text-sm font-bold text-slate-800 dark:text-slate-100">
+                    +91 98765 43210
+                  </p>
+                </div>
+              </a>
             </div>
 
-            <button className="flex items-center gap-2 bg-black dark:bg-white text-white dark:text-black px-8 py-4 rounded-xl font-bold hover:bg-yellow-500 hover:text-black transition-all">
-              <Navigation size={20} /> Get Directions on Maps
-            </button>
+            {/* Action & Trust Highlights */}
+            <div className="pt-2 space-y-4">
+              <a
+                href={googleMapsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full flex items-center justify-center gap-2.5 bg-slate-900 hover:bg-amber-500 hover:text-slate-950 text-white font-bold py-4 px-6 rounded-2xl shadow-lg transition-all active:scale-[0.98]"
+              >
+                <Navigation size={20} />
+                <span>Get Directions on Google Maps</span>
+                <ExternalLink size={16} className="opacity-70" />
+              </a>
+
+              <div className="flex items-center justify-center gap-6 pt-2 text-slate-500 dark:text-zinc-400 text-xs font-semibold">
+                <span className="flex items-center gap-1.5">
+                  <ShieldCheck size={16} className="text-amber-500" /> Free Eye
+                  Examination
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <ShieldCheck size={16} className="text-amber-500" /> Instant
+                  Frame Fitting
+                </span>
+              </div>
+            </div>
           </div>
 
-          {/* Map Section */}
-          <div className="h-[450px] bg-gray-200 dark:bg-zinc-800 rounded-[2rem] overflow-hidden relative group">
-            {/* Yahan aap Google Maps ka Embed link daal sakti hain */}
+          {/* RIGHT SIDE: EMBEDDED GOOGLE MAP */}
+          <div className="lg:col-span-6 h-[400px] sm:h-[500px] lg:h-[620px] bg-slate-200 dark:bg-zinc-900 rounded-3xl overflow-hidden border border-slate-200 dark:border-zinc-800 shadow-xl relative">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3502.0463137955566!2d77.36531397550186!3d28.62892977566952!2m3!1f0!2f0!3f0!3m2!1i1024!2m7!4f13.1!3m3!1m2!1s0x390cf17c469f8c15%3A0x633908866503c533!2sNoida%20One%20Building!5e0!3m2!1sen!2sin!4v1715456789012!3m2!1sen!2sin!4v1715456789012"
+              src="https://maps.google.com/maps?q=Noida%20One%20Building%20Sector%2062%20Noida&t=&z=15&ie=UTF8&iwloc=&output=embed"
               width="100%"
               height="100%"
               style={{ border: 0 }}
               allowFullScreen
               loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Sunrise Optical Store Map"
+              className="w-full h-full grayscale hover:grayscale-0 transition-all duration-500"
             ></iframe>
           </div>
         </div>
