@@ -19,26 +19,21 @@ export default function Footer() {
           {/* 1. Brand Intro */}
           <div className="lg:col-span-2 space-y-4">
             <Link href="/" className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-amber-500/10 p-1.5 flex items-center justify-center border border-amber-500/20">
+              <div className="w-10 h-10 rounded-2xl bg-amber-500/15 p-1.5 flex items-center justify-center border border-amber-500/30">
                 <Image
                   src="/sunrise.png"
-                  alt="Sunrise Optical Logo"
+                  alt="Sunrise Logo"
                   width={36}
                   height={36}
                   className="object-contain"
                 />
               </div>
               <div className="flex flex-col">
-                <div className="flex items-center gap-1">
-                  <span className="text-lg font-black text-white tracking-tight">
-                    SUNRISE
-                  </span>
-                  <span className="text-lg font-black text-amber-500 tracking-tight">
-                    OPTICAL
-                  </span>
-                </div>
-                <span className="text-[9px] tracking-widest text-slate-500 font-bold uppercase">
-                  Luxury Eyewear Studio
+                <span className="text-xl font-black gold-gradient-text tracking-tight leading-none">
+                  SUNRISE
+                </span>
+                <span className="text-[9px] tracking-widest text-zinc-400 font-bold uppercase mt-1">
+                  Luxury Eyewear
                 </span>
               </div>
             </Link>
@@ -159,7 +154,7 @@ export default function Footer() {
 
         {/* Bottom Strip */}
         <div className="pt-8 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
-          <p>© {new Date().getFullYear()} Sunrise Optical. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Sunrise. All rights reserved.</p>
           <div className="flex items-center gap-6">
             <span>100% Genuine Certified</span>
             <span>Made with Precision</span>

@@ -37,7 +37,7 @@ const banners = [
     title: 'Zero Glare.',
     highlight: 'Pure Optics.',
     badge: '100% UV400 Polarized',
-    desc: 'Precision optical shades engineered to eliminate harsh reflections and maximize visual depth outdoors.',
+    desc: 'Precision shades engineered to eliminate harsh reflections and maximize visual depth outdoors.',
     image:
       'https://images.unsplash.com/photo-1508296695146-257a814070b4?q=80&w=2000&auto=format&fit=crop',
     link: '/shop/sunglasses',
@@ -61,7 +61,7 @@ const banners = [
     title: 'Bespoke',
     highlight: 'Eye Styling.',
     badge: 'Free Computerised Exam',
-    desc: 'Experience luxury optical styling, computerized power checkups, and instant frame fitting at our Patiala studio.',
+    desc: 'Experience luxury eyewear styling, computerized power checkups, and instant frame fitting at our Patiala studio.',
     image:
       'https://images.unsplash.com/photo-1556740758-90de374c12ad?q=80&w=2000&auto=format&fit=crop',
     link: '/store',
@@ -155,11 +155,10 @@ export default function Home() {
         {banners.map((banner, index) => (
           <div
             key={banner.id}
-            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-              currentSlide === index
+            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${currentSlide === index
                 ? 'opacity-100 z-10'
                 : 'opacity-0 z-0 pointer-events-none'
-            }`}
+              }`}
           >
             {/* Background High-res Image */}
             <Image
@@ -253,11 +252,10 @@ export default function Home() {
               key={`dot-${i}`}
               onClick={() => setCurrentSlide(i)}
               aria-label={`Go to slide ${i + 1}`}
-              className={`h-2.5 rounded-full transition-all duration-500 ${
-                currentSlide === i
+              className={`h-2.5 rounded-full transition-all duration-500 ${currentSlide === i
                   ? 'w-12 bg-amber-400 shadow-lg shadow-amber-400/50'
                   : 'w-3 bg-white/40 hover:bg-white/70'
-              }`}
+                }`}
             />
           ))}
         </div>
@@ -273,7 +271,7 @@ export default function Home() {
               </div>
               <div>
                 <h4 className="font-extrabold text-slate-900 text-sm">Computerised Testing</h4>
-                <p className="text-slate-500 text-xs mt-0.5">Precise optical screening</p>
+                <p className="text-slate-500 text-xs mt-0.5">Precise vision screening</p>
               </div>
             </div>
 
@@ -315,7 +313,7 @@ export default function Home() {
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 sm:mb-14 gap-4">
           <div>
             <span className="text-amber-600 font-extrabold text-xs uppercase tracking-widest">
-              Curated Optical Lines
+              Curated Eyewear Lines
             </span>
             <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight mt-1">
               Shop By Eyewear Category
@@ -335,17 +333,18 @@ export default function Home() {
             <Link
               key={`cat-card-${idx}`}
               href={cat.link}
-              className="group relative h-80 sm:h-96 rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 flex flex-col justify-end p-6 border border-slate-200/60 bg-slate-900"
+              className="group relative h-80 sm:h-96 w-full rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 flex flex-col justify-end p-6 border border-slate-200/80 bg-slate-950"
             >
               <Image
                 src={cat.image}
                 alt={cat.title}
                 fill
-                className="object-cover group-hover:scale-110 transition-transform duration-700 opacity-90"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-90"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/40 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/40 to-transparent" />
 
-              <span className="absolute top-4 right-4 bg-white/90 backdrop-blur-md text-slate-900 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider">
+              <span className="absolute top-4 right-4 bg-white/90 backdrop-blur-md text-slate-900 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">
                 {cat.badge}
               </span>
 
@@ -374,10 +373,10 @@ export default function Home() {
               Exclusive Arrivals
             </span>
             <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
-              Featured Optical Collection
+              Featured Eyewear Collection
             </h2>
             <p className="text-slate-500 text-sm font-medium">
-              Handpicked frames engineered for unmatched aesthetics, durability, and optical comfort.
+              Handpicked frames engineered for unmatched aesthetics, durability, and visual comfort.
             </p>
           </div>
 
@@ -426,12 +425,12 @@ export default function Home() {
                       )}
                     </div>
 
-                    {/* Image Stage */}
-                    <div className="h-64 sm:h-72 bg-gradient-to-br from-slate-50 to-slate-100/70 relative overflow-hidden flex items-center justify-center p-6">
+                    {/* Image Stage: Perfect Responsive Display (No Cutoff on Mobile) */}
+                    <div className="w-full aspect-[4/3] sm:aspect-square bg-slate-100 relative overflow-hidden flex items-center justify-center p-4 sm:p-6 rounded-2xl border border-slate-200/60">
                       <img
                         src={imageUrl}
-                        alt={product.name || 'Optical Frame'}
-                        className="w-full h-full object-contain filter drop-shadow-sm group-hover:scale-110 transition-transform duration-500 ease-out"
+                        alt={product.name || 'Eyewear Frame'}
+                        className="w-full h-full object-contain filter drop-shadow-sm group-hover:scale-105 transition-transform duration-500 ease-out"
                       />
                     </div>
 
@@ -442,7 +441,7 @@ export default function Home() {
                           {product.name}
                         </h3>
                         <p className="text-slate-500 text-xs line-clamp-2 mt-1 leading-relaxed">
-                          {product.description || 'Premium optical frame.'}
+                          {product.description || 'Premium eyewear frame.'}
                         </p>
                       </div>
 

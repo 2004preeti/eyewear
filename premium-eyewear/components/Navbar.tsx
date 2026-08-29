@@ -100,16 +100,15 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed w-full top-0 left-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? 'bg-white/95 backdrop-blur-2xl shadow-lg shadow-slate-900/5 border-b border-slate-200/80'
-          : 'bg-white/90 backdrop-blur-xl border-b border-slate-100'
-      }`}
+      className={`fixed w-full top-0 left-0 z-50 transition-all duration-300 ${scrolled
+          ? 'bg-white/75 backdrop-blur-2xl shadow-xl shadow-slate-950/5 border-b border-white/60'
+          : 'bg-white/65 backdrop-blur-xl border-b border-white/40 shadow-sm'
+        }`}
     >
       {/* 🌟 Top Announcement Bar */}
-      <div className="bg-gradient-to-r from-slate-950 via-amber-950 to-slate-950 text-amber-300 text-[11px] font-bold py-1.5 px-4 text-center tracking-widest uppercase flex items-center justify-center gap-2">
+      <div className="bg-gradient-to-r from-slate-950 via-slate-900 to-amber-950 text-amber-300 text-[11px] font-bold py-2 px-4 text-center tracking-widest uppercase flex items-center justify-center gap-2 border-b border-amber-500/20">
         <Sparkles className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
-        <span>Complimentary Computerised Eye Testing & Premium Lens Fitting</span>
+        <span>Complimentary Computerised Eye Testing & Luxury Frame Fitting</span>
         <span className="hidden sm:inline text-amber-400/50">•</span>
         <Link
           href="/store"
@@ -122,74 +121,69 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-18 sm:h-20 flex items-center justify-between gap-3">
         {/* 👓 BRAND LOGO */}
         <Link href="/" className="flex items-center gap-3 shrink-0 group">
-          <div className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-tr from-amber-500/20 via-amber-400/10 to-transparent p-1.5 flex items-center justify-center border border-amber-500/30 group-hover:border-amber-500 transition-all shadow-sm">
+          <div className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-tr from-amber-500/20 via-amber-400/10 to-white/10 p-1.5 flex items-center justify-center border border-amber-500/30 group-hover:border-amber-400 transition-all shadow-md backdrop-blur-md">
             <Image
               src="/sunrise.png"
-              alt="Sunrise Optical Logo"
+              alt="Sunrise Logo"
               width={36}
               height={36}
               className="object-contain transform group-hover:scale-110 transition-transform duration-300"
             />
           </div>
           <div className="flex flex-col">
-            <div className="flex items-center gap-1">
-              <span className="text-base sm:text-xl font-black tracking-tight text-slate-950 leading-none">
-                SUNRISE
-              </span>
-              <span className="text-base sm:text-xl font-black tracking-tight text-amber-500 leading-none">
-                OPTICAL
-              </span>
-            </div>
-            <span className="text-[9px] sm:text-[10px] tracking-widest text-slate-400 font-bold uppercase mt-0.5">
-              Luxury Eyewear Studio
+            <span className="text-lg sm:text-2xl font-black tracking-tight gold-gradient-text leading-none">
+              SUNRISE
+            </span>
+            <span className="text-[9px] sm:text-[10px] tracking-widest text-zinc-400 font-bold uppercase mt-1">
+              Luxury Eyewear
             </span>
           </div>
         </Link>
 
         {/* 🧭 DESKTOP NAVIGATION LINKS */}
-        <nav className="hidden lg:flex items-center gap-1 bg-slate-100/90 backdrop-blur-md p-1.5 rounded-full border border-slate-200/70 shadow-inner">
+        <nav className="hidden lg:flex items-center gap-1 bg-white/[0.05] backdrop-blur-2xl p-1.5 rounded-full border border-white/10 shadow-lg">
           <Link
             href="/shop/all"
-            className="px-4 py-2 text-xs font-bold text-slate-700 hover:text-slate-950 hover:bg-white rounded-full transition-all uppercase tracking-wider"
+            className="px-4 py-2 text-xs font-bold text-zinc-300 hover:text-white hover:bg-white/10 rounded-full transition-all uppercase tracking-wider"
           >
             All Frames
           </Link>
           <Link
             href="/shop/eyeglasses"
-            className="px-4 py-2 text-xs font-bold text-slate-700 hover:text-slate-950 hover:bg-white rounded-full transition-all uppercase tracking-wider"
+            className="px-4 py-2 text-xs font-bold text-zinc-300 hover:text-white hover:bg-white/10 rounded-full transition-all uppercase tracking-wider"
           >
             Eyeglasses
           </Link>
           <Link
             href="/shop/sunglasses"
-            className="px-4 py-2 text-xs font-bold text-slate-700 hover:text-slate-950 hover:bg-white rounded-full transition-all uppercase tracking-wider"
+            className="px-4 py-2 text-xs font-bold text-zinc-300 hover:text-white hover:bg-white/10 rounded-full transition-all uppercase tracking-wider"
           >
             Sunglasses
           </Link>
           <Link
             href="/shop/computer"
-            className="px-4 py-2 text-xs font-bold text-slate-700 hover:text-slate-950 hover:bg-white rounded-full transition-all uppercase tracking-wider"
+            className="px-4 py-2 text-xs font-bold text-zinc-300 hover:text-white hover:bg-white/10 rounded-full transition-all uppercase tracking-wider"
           >
             Computer Glasses
           </Link>
 
-          <span className="h-4 w-[1px] bg-slate-300 mx-1"></span>
+          <span className="h-4 w-[1px] bg-white/15 mx-1"></span>
 
           <Link
             href="/shop/men"
-            className="px-3.5 py-2 text-xs font-extrabold text-amber-600 hover:bg-amber-500 hover:text-slate-950 rounded-full transition-all uppercase tracking-wider"
+            className="px-3.5 py-2 text-xs font-extrabold text-amber-400 hover:bg-amber-400 hover:text-black rounded-full transition-all uppercase tracking-wider"
           >
             Men
           </Link>
           <Link
             href="/shop/women"
-            className="px-3.5 py-2 text-xs font-extrabold text-amber-600 hover:bg-amber-500 hover:text-slate-950 rounded-full transition-all uppercase tracking-wider"
+            className="px-3.5 py-2 text-xs font-extrabold text-amber-400 hover:bg-amber-400 hover:text-black rounded-full transition-all uppercase tracking-wider"
           >
             Women
           </Link>
           <Link
             href="/shop/kids"
-            className="px-3.5 py-2 text-xs font-extrabold text-amber-600 hover:bg-amber-500 hover:text-slate-950 rounded-full transition-all uppercase tracking-wider"
+            className="px-3.5 py-2 text-xs font-extrabold text-amber-400 hover:bg-amber-400 hover:text-black rounded-full transition-all uppercase tracking-wider"
           >
             Kids
           </Link>
@@ -205,13 +199,13 @@ export default function Navbar() {
               onChange={handleSearchChange}
               onFocus={() => searchQuery.trim() && setShowSearchDropdown(true)}
               placeholder="Search frames, style, price..."
-              className="w-full bg-slate-100/90 border border-slate-200/90 focus:bg-white focus:border-amber-500 text-slate-900 text-xs font-semibold py-2.5 pl-9 pr-4 rounded-full outline-none transition-all placeholder-slate-400 shadow-sm focus:ring-2 focus:ring-amber-500/20"
+              className="w-full bg-white/60 backdrop-blur-xl border border-white/80 focus:bg-white focus:border-amber-400 text-slate-900 text-xs font-semibold py-2.5 pl-9 pr-4 rounded-full outline-none transition-all placeholder-slate-400 shadow-inner focus:ring-2 focus:ring-amber-500/20"
             />
             <Search className="w-4 h-4 absolute left-3 top-3 text-slate-400 pointer-events-none" />
 
             {/* Dropdown Live Results */}
             {showSearchDropdown && (
-              <div className="absolute top-12 left-0 w-80 bg-white border border-slate-200 rounded-3xl shadow-2xl overflow-hidden z-50 max-h-[360px] overflow-y-auto p-2">
+              <div className="absolute top-12 left-0 w-80 glass-card rounded-3xl shadow-2xl overflow-hidden z-50 max-h-[360px] overflow-y-auto p-2 border border-white/80">
                 <div className="px-3 py-2 text-[10px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100 flex justify-between items-center">
                   <span>Found Products ({searchResults.length})</span>
                   <span className="text-amber-600">Live Search</span>
@@ -229,7 +223,7 @@ export default function Navbar() {
                           <img
                             src={item.images?.[0] || '/placeholder.jpg'}
                             alt={item.name}
-                            className="w-full h-full object-contain group-hover:scale-110 transition-transform"
+                            className="w-full h-full object-cover group-hover:scale-110 transition-transform"
                           />
                         </div>
                         <div className="flex flex-col min-w-0 flex-1">
@@ -328,7 +322,7 @@ export default function Navbar() {
                       <img
                         src={item.images?.[0] || '/placeholder.jpg'}
                         alt={item.name}
-                        className="w-9 h-9 object-contain rounded-lg bg-gray-50 shrink-0"
+                        className="w-9 h-9 object-cover rounded-lg bg-gray-50 shrink-0"
                       />
                       <div className="flex flex-col min-w-0 flex-1">
                         <span className="text-xs font-bold text-slate-800 truncate">

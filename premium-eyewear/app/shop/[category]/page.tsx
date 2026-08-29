@@ -79,7 +79,7 @@ export default async function CategoryPage({
           <div className="space-y-2">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 font-bold text-xs uppercase tracking-widest border border-amber-400/30">
               <Sparkles className="w-3.5 h-3.5" />
-              Optical Collection
+              Eyewear Collection
             </span>
             <h1 className="text-3xl sm:text-5xl font-black capitalize tracking-tight">
               {category === 'all' ? 'All Eyewear' : `${category} Collection`}
@@ -110,11 +110,10 @@ export default async function CategoryPage({
               <Link
                 key={catItem.slug}
                 href={`/shop/${catItem.slug}`}
-                className={`px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-all duration-300 shadow-sm ${
-                  isActive
+                className={`px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-all duration-300 shadow-sm ${isActive
                     ? 'bg-slate-950 text-white shadow-md'
                     : 'bg-white text-slate-700 hover:bg-amber-50 hover:text-slate-950 border border-slate-200/80'
-                }`}
+                  }`}
               >
                 {catItem.label}
               </Link>
@@ -163,12 +162,12 @@ export default async function CategoryPage({
                   key={product.id || product.slug || `prod-${idx}`}
                   className="group bg-white border border-slate-200/80 rounded-3xl overflow-hidden hover:shadow-2xl hover:border-slate-300 transition-all duration-300 flex flex-col justify-between"
                 >
-                  {/* Image Showcase */}
-                  <div className="h-64 sm:h-72 bg-gradient-to-br from-slate-50 to-slate-100/70 relative overflow-hidden flex items-center justify-center p-6">
+                  {/* Image Showcase: Responsive Display (No Cutoff on Mobile) */}
+                  <div className="w-full aspect-[4/3] sm:aspect-square bg-slate-100 relative overflow-hidden flex items-center justify-center p-4 sm:p-6 rounded-2xl border border-slate-200/60">
                     <img
                       src={imageUrl}
                       alt={product.name}
-                      className="w-full h-full object-contain filter drop-shadow-sm group-hover:scale-110 transition-transform duration-500 ease-out"
+                      className="w-full h-full object-contain filter drop-shadow-sm group-hover:scale-105 transition-transform duration-500 ease-out"
                     />
 
                     {/* Tags */}

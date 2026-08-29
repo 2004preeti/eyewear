@@ -140,15 +140,15 @@ export default function ProductDetailPage({
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-50 pt-24 pb-20">
+    <div className="min-h-screen bg-slate-50 text-slate-900 pt-24 pb-20 relative overflow-hidden">
       {/* 🧭 BREADCRUMBS */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
         <nav className="flex items-center gap-2 text-xs sm:text-sm font-medium text-slate-500 overflow-x-auto py-2">
-          <Link href="/" className="hover:text-slate-900 transition-colors flex items-center gap-1">
+          <Link href="/" className="hover:text-slate-950 transition-colors flex items-center gap-1">
             Home
           </Link>
           <ChevronRight className="w-4 h-4 text-slate-400 flex-shrink-0" />
-          <Link href="/shop/all" className="hover:text-slate-900 transition-colors">
+          <Link href="/shop/all" className="hover:text-slate-950 transition-colors">
             Shop
           </Link>
           {product.category && (
@@ -156,14 +156,14 @@ export default function ProductDetailPage({
               <ChevronRight className="w-4 h-4 text-slate-400 flex-shrink-0" />
               <Link
                 href={`/shop/${product.category.toLowerCase()}`}
-                className="capitalize hover:text-slate-900 transition-colors"
+                className="capitalize hover:text-slate-950 transition-colors"
               >
                 {product.category}
               </Link>
             </>
           )}
           <ChevronRight className="w-4 h-4 text-slate-400 flex-shrink-0" />
-          <span className="text-slate-900 font-semibold truncate max-w-[200px] sm:max-w-xs">
+          <span className="text-slate-900 font-bold truncate max-w-[200px] sm:max-w-xs">
             {product.name}
           </span>
         </nav>
@@ -171,12 +171,12 @@ export default function ProductDetailPage({
 
       {/* 🌟 MAIN PRODUCT CONTAINER */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 bg-white rounded-3xl p-6 sm:p-10 shadow-xl shadow-slate-100/70 border border-slate-100">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 bg-white rounded-3xl p-6 sm:p-10 shadow-xl shadow-slate-200/50 border border-slate-200/80">
           
           {/* 📸 LEFT GALLERY: 7 COLUMNS */}
           <div className="lg:col-span-7 flex flex-col gap-5">
-            {/* Main Stage Image */}
-            <div className="relative w-full aspect-square max-h-[540px] bg-gradient-to-br from-slate-50 to-slate-100/70 rounded-3xl overflow-hidden border border-slate-100 flex items-center justify-center p-6 group">
+            {/* Main Stage Image: Perfect Frame Display (No Cutoff on Mobile) */}
+            <div className="relative w-full aspect-square max-h-[380px] sm:max-h-[540px] bg-slate-100 rounded-3xl overflow-hidden border border-slate-200/80 flex items-center justify-center p-4 sm:p-8 group">
               <img
                 src={selectedImage}
                 alt={product.name}
@@ -184,9 +184,9 @@ export default function ProductDetailPage({
               />
 
               {/* Floating Badges */}
-              <div className="absolute top-4 left-4 flex flex-col gap-2">
-                <span className="bg-slate-900/90 backdrop-blur-md text-amber-400 text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider shadow-sm flex items-center gap-1.5">
-                  <Sparkles className="w-3.5 h-3.5" />
+              <div className="absolute top-4 left-4 flex flex-col gap-2 z-20">
+                <span className="bg-slate-950/90 backdrop-blur-md text-amber-400 text-xs font-bold px-3.5 py-1.5 rounded-full uppercase tracking-wider shadow-sm flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-amber-400" />
                   Premium Collection
                 </span>
                 {discountPercent > 0 && (
@@ -197,13 +197,13 @@ export default function ProductDetailPage({
               </div>
 
               {/* Wishlist & Share Quick Action */}
-              <div className="absolute top-4 right-4 flex items-center gap-2">
+              <div className="absolute top-4 right-4 flex items-center gap-2 z-20">
                 <button
                   onClick={() => setIsWishlisted(!isWishlisted)}
                   className={`p-3 rounded-full backdrop-blur-md transition-all shadow-sm ${
                     isWishlisted
                       ? 'bg-rose-50 text-rose-500 border border-rose-200'
-                      : 'bg-white/90 text-slate-700 hover:text-rose-500 border border-slate-200/60 hover:bg-white'
+                      : 'bg-white/90 text-slate-700 hover:text-rose-500 border border-slate-200/80 hover:bg-white'
                   }`}
                   title="Wishlist"
                 >
@@ -211,7 +211,7 @@ export default function ProductDetailPage({
                 </button>
                 <button
                   onClick={handleCopyLink}
-                  className="p-3 rounded-full bg-white/90 backdrop-blur-md text-slate-700 hover:text-slate-900 border border-slate-200/60 hover:bg-white transition-all shadow-sm relative"
+                  className="p-3 rounded-full bg-white/90 backdrop-blur-md text-slate-700 hover:text-slate-950 border border-slate-200/80 hover:bg-white transition-all shadow-sm relative"
                   title="Share"
                 >
                   {copied ? (
@@ -237,9 +237,9 @@ export default function ProductDetailPage({
                     <button
                       key={index}
                       onClick={() => setSelectedImage(img)}
-                      className={`relative flex-shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden bg-slate-50 border-2 transition-all p-2 flex items-center justify-center ${
+                      className={`relative flex-shrink-0 w-18 h-18 sm:w-24 sm:h-24 rounded-2xl overflow-hidden bg-slate-100 border-2 transition-all p-1.5 flex items-center justify-center ${
                         isActive
-                          ? 'border-slate-900 ring-2 ring-slate-900/20 scale-95 shadow-sm'
+                          ? 'border-slate-950 ring-2 ring-slate-950/20 scale-95 shadow-sm'
                           : 'border-slate-200/80 hover:border-slate-400 opacity-75 hover:opacity-100'
                       }`}
                     >
@@ -256,19 +256,19 @@ export default function ProductDetailPage({
 
             {/* Feature Guarantees Strip */}
             <div className="grid grid-cols-3 gap-3 pt-4 border-t border-slate-100 text-center">
-              <div className="flex flex-col items-center gap-1.5 p-3 rounded-2xl bg-slate-50/70 border border-slate-100">
+              <div className="flex flex-col items-center gap-1.5 p-3 rounded-2xl bg-slate-50 border border-slate-100">
                 <Truck className="w-5 h-5 text-amber-600" />
-                <span className="text-xs font-bold text-slate-800">Fast Shipping</span>
+                <span className="text-xs font-bold text-slate-900">Fast Shipping</span>
                 <span className="text-[11px] text-slate-500">All India Dispatch</span>
               </div>
-              <div className="flex flex-col items-center gap-1.5 p-3 rounded-2xl bg-slate-50/70 border border-slate-100">
+              <div className="flex flex-col items-center gap-1.5 p-3 rounded-2xl bg-slate-50 border border-slate-100">
                 <RotateCcw className="w-5 h-5 text-amber-600" />
-                <span className="text-xs font-bold text-slate-800">7 Days Easy Return</span>
+                <span className="text-xs font-bold text-slate-900">7 Days Easy Return</span>
                 <span className="text-[11px] text-slate-500">Hassle-Free Policy</span>
               </div>
-              <div className="flex flex-col items-center gap-1.5 p-3 rounded-2xl bg-slate-50/70 border border-slate-100">
+              <div className="flex flex-col items-center gap-1.5 p-3 rounded-2xl bg-slate-50 border border-slate-100">
                 <ShieldCheck className="w-5 h-5 text-amber-600" />
-                <span className="text-xs font-bold text-slate-800">100% Genuine</span>
+                <span className="text-xs font-bold text-slate-900">100% Genuine</span>
                 <span className="text-[11px] text-slate-500">Quality Verified</span>
               </div>
             </div>
@@ -284,7 +284,7 @@ export default function ProductDetailPage({
                     {product.category}
                   </span>
                 )}
-                <span className="bg-slate-100 text-slate-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                <span className="bg-slate-100 text-slate-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider border border-slate-200/60">
                   {product.audience || 'Unisex'}
                 </span>
                 <span className="inline-flex items-center gap-1 text-emerald-600 text-xs font-bold bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
@@ -300,7 +300,7 @@ export default function ProductDetailPage({
 
               {/* Rating Review Snippet */}
               <div className="flex items-center gap-3 mb-5">
-                <div className="flex items-center gap-1 bg-amber-400/10 text-amber-700 px-2.5 py-1 rounded-lg text-xs font-black">
+                <div className="flex items-center gap-1 bg-amber-50 text-amber-700 border border-amber-200/80 px-2.5 py-1 rounded-lg text-xs font-black">
                   <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
                   4.9
                 </div>
@@ -310,15 +310,15 @@ export default function ProductDetailPage({
               </div>
 
               {/* Price Section */}
-              <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-amber-50/60 via-orange-50/40 to-slate-50 border border-amber-100/80 mb-6">
+              <div className="p-5 rounded-2xl bg-gradient-to-r from-amber-50/70 via-orange-50/40 to-slate-50 border border-amber-100 mb-6">
                 <div className="flex items-baseline gap-3">
-                  <span className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
+                  <span className="text-3xl sm:text-4xl font-black text-slate-950 tracking-tight">
                     ₹{product.price}
                   </span>
                   <span className="text-lg text-slate-400 font-semibold line-through">
                     ₹{originalPrice}
                   </span>
-                  <span className="text-sm font-extrabold text-emerald-600 bg-emerald-100/70 px-2 py-0.5 rounded-md">
+                  <span className="text-sm font-extrabold text-emerald-700 bg-emerald-100/80 border border-emerald-200 px-2.5 py-0.5 rounded-md">
                     Save ₹{originalPrice - Number(product.price)}
                   </span>
                 </div>
@@ -349,7 +349,7 @@ export default function ProductDetailPage({
                         return (
                           <div
                             key={idx}
-                            className="flex items-center gap-2.5 text-sm font-medium text-slate-700 bg-slate-50/80 border border-slate-100 px-3.5 py-2 rounded-xl"
+                            className="flex items-center gap-2.5 text-sm font-medium text-slate-800 bg-slate-50 border border-slate-200/80 px-3.5 py-2 rounded-xl"
                           >
                             <Ruler className="w-4 h-4 text-amber-600 flex-shrink-0" />
                             <span>{line}</span>
@@ -421,7 +421,7 @@ export default function ProductDetailPage({
               {/* WhatsApp Primary Order */}
               <button
                 onClick={handleWhatsAppOrder}
-                className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black py-4 px-6 rounded-2xl flex items-center justify-center gap-3 transition-all duration-300 shadow-lg shadow-emerald-600/25 hover:shadow-emerald-600/40 transform hover:-translate-y-0.5 text-base sm:text-lg"
+                className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black py-4 px-6 rounded-2xl flex items-center justify-center gap-3 transition-all duration-300 shadow-lg shadow-emerald-600/25 transform hover:scale-[1.01] text-base sm:text-lg"
               >
                 <svg
                   className="w-6 h-6 fill-current"
@@ -437,14 +437,14 @@ export default function ProductDetailPage({
               <div className="grid grid-cols-2 gap-3">
                 <button
                   onClick={handleWhatsAppOrder}
-                  className="bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 px-4 rounded-2xl flex items-center justify-center gap-2 transition-all shadow-md text-sm sm:text-base"
+                  className="bg-slate-950 hover:bg-amber-500 hover:text-slate-950 text-white font-black py-3.5 px-4 rounded-2xl flex items-center justify-center gap-2 transition-all shadow-md text-sm sm:text-base active:scale-95"
                 >
                   <ShoppingBag className="w-5 h-5" />
                   Buy Now
                 </button>
                 <button
                   onClick={handleCopyLink}
-                  className="border border-slate-300 hover:border-slate-900 bg-white text-slate-800 font-bold py-3.5 px-4 rounded-2xl flex items-center justify-center gap-2 transition-all text-sm sm:text-base hover:bg-slate-50"
+                  className="border border-slate-200/80 hover:border-slate-950 bg-white hover:bg-slate-50 text-slate-800 font-bold py-3.5 px-4 rounded-2xl flex items-center justify-center gap-2 transition-all text-sm sm:text-base"
                 >
                   {copied ? (
                     <>
@@ -465,13 +465,13 @@ export default function ProductDetailPage({
         </div>
 
         {/* 🔍 DETAILED INFORMATION TABS */}
-        <div className="mt-12 bg-white rounded-3xl p-6 sm:p-10 border border-slate-100 shadow-md">
+        <div className="mt-12 bg-white rounded-3xl p-6 sm:p-10 border border-slate-200/80 shadow-md">
           <div className="flex border-b border-slate-200 gap-4 sm:gap-8 overflow-x-auto pb-1">
             <button
               onClick={() => setActiveTab('overview')}
               className={`pb-4 text-sm sm:text-base font-bold transition-all border-b-2 flex-shrink-0 ${
                 activeTab === 'overview'
-                  ? 'border-amber-500 text-slate-900'
+                  ? 'border-amber-500 text-slate-950'
                   : 'border-transparent text-slate-400 hover:text-slate-700'
               }`}
             >
@@ -481,7 +481,7 @@ export default function ProductDetailPage({
               onClick={() => setActiveTab('specs')}
               className={`pb-4 text-sm sm:text-base font-bold transition-all border-b-2 flex-shrink-0 ${
                 activeTab === 'specs'
-                  ? 'border-amber-500 text-slate-900'
+                  ? 'border-amber-500 text-slate-950'
                   : 'border-transparent text-slate-400 hover:text-slate-700'
               }`}
             >
@@ -491,7 +491,7 @@ export default function ProductDetailPage({
               onClick={() => setActiveTab('shipping')}
               className={`pb-4 text-sm sm:text-base font-bold transition-all border-b-2 flex-shrink-0 ${
                 activeTab === 'shipping'
-                  ? 'border-amber-500 text-slate-900'
+                  ? 'border-amber-500 text-slate-950'
                   : 'border-transparent text-slate-400 hover:text-slate-700'
               }`}
             >
@@ -542,7 +542,7 @@ export default function ProductDetailPage({
                     </tr>
                     <tr className="py-3">
                       <td className="py-3 font-semibold text-slate-500">Category</td>
-                      <td className="py-3 font-bold text-slate-900 capitalize">{product.category || 'Eyewear'}</td>
+                      <td className="py-3 font-bold text-amber-700 capitalize">{product.category || 'Eyewear'}</td>
                     </tr>
                     <tr className="py-3">
                       <td className="py-3 font-semibold text-slate-500">Target Audience</td>
@@ -612,16 +612,16 @@ export default function ProductDetailPage({
                   <Link
                     key={item.slug || item.name}
                     href={`/product/${item.slug}`}
-                    className="group bg-white rounded-3xl p-4 border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
+                    className="group bg-white rounded-3xl p-4 border border-slate-200/80 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
                   >
-                    <div className="w-full aspect-square bg-slate-50 rounded-2xl overflow-hidden p-4 mb-4 flex items-center justify-center relative">
+                    <div className="w-full aspect-[4/3] sm:aspect-square bg-slate-100 rounded-2xl overflow-hidden mb-4 flex items-center justify-center p-3 relative border border-slate-200/60">
                       <img
                         src={img}
                         alt={item.name}
                         className="w-full h-full object-contain filter drop-shadow-sm group-hover:scale-105 transition-transform duration-300"
                       />
                       {item.category && (
-                        <span className="absolute top-3 left-3 bg-white/90 backdrop-blur-md text-[10px] font-bold text-slate-800 px-2.5 py-1 rounded-full uppercase border border-slate-200/60">
+                        <span className="absolute top-3 left-3 bg-white/90 backdrop-blur-md text-[10px] font-bold text-slate-800 px-2.5 py-1 rounded-full uppercase border border-slate-200/80">
                           {item.category}
                         </span>
                       )}
@@ -634,7 +634,7 @@ export default function ProductDetailPage({
                         <span className="text-lg font-black text-slate-900">
                           ₹{item.price}
                         </span>
-                        <span className="text-xs font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-md">
+                        <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
                           In Stock
                         </span>
                       </div>

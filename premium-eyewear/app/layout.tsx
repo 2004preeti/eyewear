@@ -8,7 +8,7 @@ import FloatingWhatsApp from '@/components/FloatingWhatsApp';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Sunrise Optical | Luxury Eyewear & Premium Lenses',
+  title: 'Sunrise | Luxury Eyewear & Premium Lenses',
   description:
     'Discover handcrafted luxury eyeglasses, polarized sunglasses, and precision lenses with computerised eye testing.',
 };

@@ -14,7 +14,7 @@ export default function FloatingWhatsApp() {
   }, []);
 
   const handleChat = () => {
-    const message = `Hello Sunrise Optical! I am browsing your website and need some assistance.\n\nLink: ${currentUrl}`;
+    const message = `Hello Sunrise! I am browsing your website and need some assistance.\n\nLink: ${currentUrl}`;
     const whatsappUrl = `https://wa.me/${myWhatsAppNumber}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
   };

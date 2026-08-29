@@ -20,7 +20,7 @@ export default function WhatsAppShare({
   }, [slug]);
 
   const handleShare = () => {
-    const message = `Check out this Optical:\n${productName}\n\n${currentUrl}`;
+    const message = `Check out this Eyewear:\n${productName}\n\n${currentUrl}`;
     const encodedMessage = encodeURIComponent(message);
     const whatsappUrl = `https://wa.me/?text=${encodedMessage}`;
     window.open(whatsappUrl, '_blank');
