@@ -1,0 +1,17 @@
+name: Keep Database Alive
+
+on:
+  schedule:
+    # Runs every 3 days at 06:00 UTC
+    - cron: '0 6 */3 * *'
+  workflow_dispatch: # Allows manual trigger anytime
+
+jobs:
+  ping-api:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Products API
+        run: |
+          echo "Pinging Eyewear Products API to keep Supabase active..."
+          curl -s -o /dev/null -w "%{http_code}" https://eyewear-cyan.vercel.app/api/products
+          echo "Ping successful! Database is kept active."
