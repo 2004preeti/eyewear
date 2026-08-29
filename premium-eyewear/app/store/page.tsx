@@ -18,10 +18,10 @@ export default function StoreLocatorPage() {
   const [copied, setCopied] = useState(false);
 
   const fullAddress =
-    'Shop No. 12, Ground Floor, Noida One Building, Sector 62, Noida, Uttar Pradesh - 201301';
+    'SCO-17, Polo Ground Market, opp. Budha Dal Public School-Junior Wing, New Lal Bagh Colony, Patiala, Punjab 147001, India';
 
   const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-    'Noida One Building Sector 62 Noida',
+    'SCO-17, Polo Ground Market, Patiala, Punjab 147001, India',
   )}`;
 
   const handleCopyAddress = () => {
@@ -74,7 +74,7 @@ export default function StoreLocatorPage() {
                   Sunrise Optical
                 </h2>
                 <p className="text-xs text-slate-200 font-medium">
-                  Sector 62, Noida Flagship Studio
+                  Patiala Flagship Studio
                 </p>
               </div>
             </div>
@@ -104,8 +104,8 @@ export default function StoreLocatorPage() {
                     </button>
                   </div>
                   <p className="text-slate-600 dark:text-zinc-300 text-sm leading-relaxed font-medium">
-                    Shop No. 12, Ground Floor, Noida One Building, <br />
-                    Sector 62, Noida, Uttar Pradesh - 201301
+                    SCO-17, Polo Ground Market, opp. Budha Dal Public School-Junior Wing, <br />
+                    New Lal Bagh Colony, Patiala, Punjab 147001, India
                   </p>
                 </div>
               </div>
@@ -128,7 +128,7 @@ export default function StoreLocatorPage() {
               </div>
 
               <a
-                href="tel:+919876543210"
+                href="tel:+919815532497"
                 className="bg-white dark:bg-zinc-900 p-5 rounded-2xl border border-slate-200/80 dark:border-zinc-800 flex items-center gap-3.5 hover:border-amber-500 transition-colors group"
               >
                 <div className="p-2.5 bg-amber-500/10 text-amber-600 rounded-xl group-hover:bg-amber-500 group-hover:text-black transition-colors">
@@ -139,7 +139,7 @@ export default function StoreLocatorPage() {
                     Phone Number
                   </p>
                   <p className="text-sm font-bold text-slate-800 dark:text-slate-100">
-                    +91 98765 43210
+                    +91 98155 32497
                   </p>
                 </div>
               </a>
@@ -174,7 +174,7 @@ export default function StoreLocatorPage() {
           {/* RIGHT SIDE: EMBEDDED GOOGLE MAP */}
           <div className="lg:col-span-6 h-[400px] sm:h-[500px] lg:h-[620px] bg-slate-200 dark:bg-zinc-900 rounded-3xl overflow-hidden border border-slate-200 dark:border-zinc-800 shadow-xl relative">
             <iframe
-              src="https://maps.google.com/maps?q=Noida%20One%20Building%20Sector%2062%20Noida&t=&z=15&ie=UTF8&iwloc=&output=embed"
+              src="https://maps.google.com/maps?q=SCO-17,%20Polo%20Ground%20Market,%20Patiala,%20Punjab%20147001,%20India&t=&z=15&ie=UTF8&iwloc=&output=embed"
               width="100%"
               height="100%"
               style={{ border: 0 }}

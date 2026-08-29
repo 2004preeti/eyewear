@@ -1,45 +1,62 @@
 import { NextResponse } from 'next/server';
-import connectDB from '@/lib/mongodb';
-import { Product } from '@/lib/models/Product';
+import { supabase } from '@/lib/supabase';
 
-// Saare products get karne ke liye
+// GET all products
 export async function GET() {
   try {
-    await connectDB();
-    const products = await Product.find({});
-    return NextResponse.json(products, { status: 200 });
+    const { data, error } = await supabase.from('products').select('*');
+    
+    if (error) {
+      console.error('Supabase GET Error:', error.message);
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+    
+    return NextResponse.json(data, { status: 200 });
   } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    console.error('Server GET Error:', error);
+    return NextResponse.json({ error: 'Server Internal Error' }, { status: 500 });
   }
 }
 
-// Naya product add karne ke liye
+// POST a new product
 export async function POST(req: Request) {
   try {
-    // 1. Pehle database connection ensure karein
-    await connectDB();
-
-    // 2. Request body se JSON data nikaalein
     const body = await req.json();
+    const { name, price, description, images, slug, category, audience } = body;
 
-    // 3. Choti si validation check
-    if (!body.name || !body.price || !body.slug) {
+    if (!name || !price || !slug) {
       return NextResponse.json(
         { error: 'Required fields missing (name, price, slug)' },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
-    // 4. Database mein product create karein
-    const newProduct = await Product.create(body);
+    const { data, error } = await supabase
+      .from('products')
+      .insert([
+        {
+          name,
+          price: Number(price),
+          description,
+          images,
+          slug,
+          category,
+          audience: audience || 'unisex',
+        },
+      ])
+      .select();
 
-    // 5. Success response return karein
-    return NextResponse.json(newProduct, { status: 201 });
+    if (error) {
+      console.error('Supabase POST Error:', error.message);
+      return NextResponse.json({ error: error.message }, { status: 400 });
+    }
+
+    return NextResponse.json(data, { status: 201 });
   } catch (error: any) {
-    console.error('POST Error Details:', error);
+    console.error('Server POST Error:', error);
     return NextResponse.json(
-      { error: error.message || 'Product add nahi ho paya' },
-      { status: 500 },
+      { error: 'Server Internal Error' },
+      { status: 500 }
     );
   }
 }

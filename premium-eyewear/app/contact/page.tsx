@@ -26,7 +26,7 @@ export default function ContactPage() {
                 <h3 className="text-xl font-bold">Call or WhatsApp</h3>
               </div>
               <p className="text-gray-600 dark:text-gray-300">
-                +91 98765 43210
+                +91 98155 32497
               </p>
             </div>
 

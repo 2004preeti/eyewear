@@ -44,7 +44,7 @@ export default function Home() {
     async function fetchLiveProducts() {
       try {
         const res = await fetch(
-          'https://eyewear-3zv6.onrender.com/api/products',
+          '/api/products',
           {
             cache: 'no-store',
           },

@@ -36,7 +36,7 @@ export default function AdminPage() {
   const fetchProducts = async () => {
     try {
       const res = await fetch(
-        'https://eyewear-3zv6.onrender.com/api/products',
+        '/api/products',
         {
           cache: 'no-store',
         },
@@ -73,22 +73,47 @@ export default function AdminPage() {
     });
   };
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const compressImage = (file: File): Promise<string> => {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new window.Image();
+        img.onload = () => {
+          const maxDim = 800;
+          let { width, height } = img;
+          if (width > height && width > maxDim) {
+            height = Math.round((height * maxDim) / width);
+            width = maxDim;
+          } else if (height > maxDim) {
+            width = Math.round((width * maxDim) / height);
+            height = maxDim;
+          }
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          if (ctx) {
+            ctx.drawImage(img, 0, 0, width, height);
+            resolve(canvas.toDataURL('image/webp', 0.8));
+          } else {
+            resolve(e.target?.result as string);
+          }
+        };
+        img.onerror = () => resolve(e.target?.result as string);
+        img.src = e.target?.result as string;
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files) {
       const fileArray = Array.from(files);
-      const newImages: string[] = [];
-
-      fileArray.forEach((file) => {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          newImages.push(reader.result as string);
-          if (newImages.length === fileArray.length) {
-            setImageFiles((prev) => [...prev, ...newImages]);
-          }
-        };
-        reader.readAsDataURL(file);
-      });
+      const compressedImages = await Promise.all(
+        fileArray.map((file) => compressImage(file))
+      );
+      setImageFiles((prev) => [...prev, ...compressedImages]);
     }
   };
 
@@ -120,7 +145,7 @@ export default function AdminPage() {
 
     try {
       const res = await fetch(
-        'https://eyewear-3zv6.onrender.com/api/products',
+        '/api/products',
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -172,7 +197,7 @@ export default function AdminPage() {
 
     try {
       const res = await fetch(
-        `https://eyewear-3zv6.onrender.com/api/products/${productId}`,
+        `/api/products/${productId}`,
         {
           method: 'DELETE',
         },

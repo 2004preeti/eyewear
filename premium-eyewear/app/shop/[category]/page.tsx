@@ -11,7 +11,7 @@ export default async function CategoryPage({
   // 1. Express + Supabase Backend se products fetch karein
   let allProducts = [];
   try {
-    const res = await fetch('https://eyewear-3zv6.onrender.com/api/products', {
+    const res = await fetch('/api/products', {
       cache: 'no-store', // Fresh data ensure karne ke liye
     });
     if (res.ok) {
