@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { supabase } from '@/lib/supabase';
 import {
   Sparkles,
   ChevronRight,
@@ -16,14 +17,12 @@ export default async function CategoryPage({
 }) {
   const { category } = await params;
 
-  // 1. Fetch live products from /api/products
-  let allProducts = [];
+  // 1. Fetch live products from Supabase directly
+  let allProducts: any[] = [];
   try {
-    const res = await fetch('http://localhost:3000/api/products', {
-      cache: 'no-store',
-    });
-    if (res.ok) {
-      allProducts = await res.json();
+    const { data, error } = await supabase.from('products').select('*');
+    if (!error && data) {
+      allProducts = data;
     }
   } catch (error) {
     console.error('Failed to fetch category products:', error);
