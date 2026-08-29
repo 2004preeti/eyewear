@@ -1,107 +1,170 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import {
+  MapPin,
+  Phone,
+  Mail,
+  ShieldCheck,
+  RotateCcw,
+  Sparkles,
+  ArrowRight,
+  Heart
+} from 'lucide-react';
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-50 dark:bg-zinc-950 border-t border-gray-200 dark:border-zinc-800 pt-16 pb-8">
-      <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-        {/* Brand Info */}
-        <div className="flex flex-col gap-4">
-          <div className="flex items-center gap-2">
-            <Image
-              src="/sunrise.png"
-              alt="Sunrise Optical Logo"
-              width={50}
-              height={50}
-              className="object-contain"
-            />
-            <h2 className="text-2xl font-extrabold tracking-tight">
-              Sunrise <span className="text-yellow-500">Optical</span>
-            </h2>
+    <footer className="bg-slate-950 text-slate-400 border-t border-slate-900 pt-16 pb-12">
+      <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-12 mb-16">
+          {/* 1. Brand Intro */}
+          <div className="lg:col-span-2 space-y-4">
+            <Link href="/" className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-2xl bg-amber-500/10 p-1.5 flex items-center justify-center border border-amber-500/20">
+                <Image
+                  src="/sunrise.png"
+                  alt="Sunrise Optical Logo"
+                  width={36}
+                  height={36}
+                  className="object-contain"
+                />
+              </div>
+              <div className="flex flex-col">
+                <div className="flex items-center gap-1">
+                  <span className="text-lg font-black text-white tracking-tight">
+                    SUNRISE
+                  </span>
+                  <span className="text-lg font-black text-amber-500 tracking-tight">
+                    OPTICAL
+                  </span>
+                </div>
+                <span className="text-[9px] tracking-widest text-slate-500 font-bold uppercase">
+                  Luxury Eyewear Studio
+                </span>
+              </div>
+            </Link>
+
+            <p className="text-slate-400 text-sm leading-relaxed max-w-sm">
+              Hand-crafted eyewear frames, precision lenses, and computerised eye examinations for all face shapes. Clear vision meets timeless style.
+            </p>
+
+            <div className="flex items-center gap-3 pt-2">
+              <a
+                href="https://wa.me/919815532497"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-4 py-2 rounded-full bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 text-xs font-bold transition-colors"
+              >
+                Chat on WhatsApp
+              </a>
+              <Link
+                href="/store"
+                className="px-4 py-2 rounded-full bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-colors border border-slate-800"
+              >
+                Store Location
+              </Link>
+            </div>
           </div>
-          <p className="text-gray-500 text-sm leading-relaxed mt-2">
-            Premium Optical for everyone. We believe in clear vision and
-            unmatched style.
-          </p>
-        </div>
 
-        {/* Shop Links */}
-        <div>
-          <h3 className="font-semibold text-lg mb-4">Shop</h3>
-          <ul className="space-y-3 text-gray-500 text-sm">
-            <li>
-              <Link href="/shop/eyeglasses" className="hover:text-yellow-500">
-                Eyeglasses
-              </Link>
-            </li>
-            <li>
-              <Link href="/shop/sunglasses" className="hover:text-yellow-500">
-                Sunglasses
-              </Link>
-            </li>
-            <li>
-              <Link href="/shop/computer" className="hover:text-yellow-500">
-                Computer Glasses
-              </Link>
-            </li>
-            <li>
-              <Link href="/shop/lenses" className="hover:text-yellow-500">
-                Contact Lenses
-              </Link>
-            </li>
-          </ul>
-        </div>
+          {/* 2. Shop Categories */}
+          <div>
+            <h3 className="text-white font-extrabold text-xs uppercase tracking-widest mb-4">
+              Eyewear
+            </h3>
+            <ul className="space-y-2.5 text-xs font-medium">
+              <li>
+                <Link href="/shop/all" className="hover:text-amber-400 transition-colors">
+                  All Eyewear
+                </Link>
+              </li>
+              <li>
+                <Link href="/shop/eyeglasses" className="hover:text-amber-400 transition-colors">
+                  Eyeglasses
+                </Link>
+              </li>
+              <li>
+                <Link href="/shop/sunglasses" className="hover:text-amber-400 transition-colors">
+                  Sunglasses
+                </Link>
+              </li>
+              <li>
+                <Link href="/shop/computer" className="hover:text-amber-400 transition-colors">
+                  Blue Cut Glasses
+                </Link>
+              </li>
+              <li>
+                <Link href="/shop/men" className="hover:text-amber-400 transition-colors">
+                  Men Collection
+                </Link>
+              </li>
+              <li>
+                <Link href="/shop/women" className="hover:text-amber-400 transition-colors">
+                  Women Collection
+                </Link>
+              </li>
+            </ul>
+          </div>
 
-        {/* Help & Support - UPDATED WITH LINKS */}
-        <div>
-          <h3 className="font-semibold text-lg mb-4">Help & Support</h3>
-          <ul className="space-y-3 text-gray-500 text-sm">
-            <li>
-              <Link href="#" className="hover:text-yellow-500">
-                Track Order
-              </Link>
-            </li>
-            <li>
-              <Link href="#" className="hover:text-yellow-500">
-                Return Policy
-              </Link>
-            </li>
-            <li>
-              <Link href="/store" className="hover:text-yellow-500">
-                Store location
-              </Link>
-            </li>
-            <li>
-              <Link href="/contact" className="hover:text-yellow-500">
-                Contact Us
-              </Link>
-            </li>
-          </ul>
-        </div>
+          {/* 3. Customer Care */}
+          <div>
+            <h3 className="text-white font-extrabold text-xs uppercase tracking-widest mb-4">
+              Assistance
+            </h3>
+            <ul className="space-y-2.5 text-xs font-medium">
+              <li>
+                <Link href="/contact" className="hover:text-amber-400 transition-colors">
+                  Contact Support
+                </Link>
+              </li>
+              <li>
+                <Link href="/store" className="hover:text-amber-400 transition-colors">
+                  Store Locator
+                </Link>
+              </li>
+              <li>
+                <a
+                  href="https://wa.me/919815532497?text=Hello!%20I%20want%20to%20know%20about%20my%20order."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-amber-400 transition-colors"
+                >
+                  Order Status (WhatsApp)
+                </a>
+              </li>
+              <li>
+                <Link href="/store" className="hover:text-amber-400 transition-colors">
+                  Free Eye Power Checkup
+                </Link>
+              </li>
+            </ul>
+          </div>
 
-        {/* Newsletter */}
-        <div>
-          <h3 className="font-semibold text-lg mb-4">Stay in the Loop</h3>
-          <p className="text-gray-500 text-sm mb-4">
-            Subscribe for exclusive offers and updates.
-          </p>
-          <div className="flex">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="w-full px-4 py-2 rounded-l-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-black focus:outline-none focus:border-yellow-500"
-            />
-            <button className="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold px-4 py-2 rounded-r-md transition-colors">
-              Subscribe
-            </button>
+          {/* 4. Flagship Studio */}
+          <div>
+            <h3 className="text-white font-extrabold text-xs uppercase tracking-widest mb-4">
+              Visit Studio
+            </h3>
+            <div className="space-y-2.5 text-xs text-slate-400">
+              <p className="leading-relaxed text-slate-300 font-medium">
+                SCO-17, Polo Ground Market, opp. Budha Dal Public School-Junior Wing, Patiala, Punjab 147001
+              </p>
+              <p className="text-amber-400 font-bold">
+                Daily: 10:00 AM - 9:00 PM
+              </p>
+              <p className="text-white font-semibold">
+                Phone: +91 98155 32497
+              </p>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="container mx-auto px-4 text-center border-t border-gray-200 dark:border-zinc-800 pt-8 text-gray-400 text-sm">
-        <p>
-          © {new Date().getFullYear()} Sunrise Optical. All rights reserved.
-        </p>
+        {/* Bottom Strip */}
+        <div className="pt-8 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+          <p>© {new Date().getFullYear()} Sunrise Optical. All rights reserved.</p>
+          <div className="flex items-center gap-6">
+            <span>100% Genuine Certified</span>
+            <span>Made with Precision</span>
+          </div>
+        </div>
       </div>
     </footer>
   );
