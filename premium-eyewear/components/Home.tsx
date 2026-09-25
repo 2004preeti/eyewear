@@ -19,51 +19,40 @@ import {
 } from 'lucide-react';
 
 const banners = [
-  {
-    id: 'banner-1',
-    tag: 'LUXURY TITANIUM 2026',
-    title: 'Architectural',
-    highlight: 'Frames.',
-    badge: 'Ultralight 12g',
-    desc: 'Handcrafted Japanese Titanium frames paired with Ultra-Clear Anti-Reflective lenses for all-day comfort.',
-    image:
-      'https://images.unsplash.com/photo-1511499767150-a48a237f0083?q=80&w=2000&auto=format&fit=crop',
-    link: '/shop/eyeglasses',
-    btnText: 'Shop Eyeglasses',
-  },
+
   {
     id: 'banner-2',
-    tag: 'POLARIZED HIGH-DEFINITION',
-    title: 'Zero Glare.',
-    highlight: 'Pure Optics.',
+    tag: 'POLARIZED HIGH-DEF TINTS',
+    title: 'Sun-Drenched.',
+    highlight: 'Zero Glare.',
     badge: '100% UV400 Polarized',
-    desc: 'Precision shades engineered to eliminate harsh reflections and maximize visual depth outdoors.',
+    desc: 'Artisanal sunglasses engineered to cut harsh reflections, elevate contrast, and shield eyes under bright skies.',
     image:
-      'https://images.unsplash.com/photo-1508296695146-257a814070b4?q=80&w=2000&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1572635196237-14b3f281503f?q=80&w=2000&auto=format&fit=crop',
     link: '/shop/sunglasses',
     btnText: 'Explore Sunglasses',
   },
   {
     id: 'banner-3',
-    tag: 'DIGITAL SCREEN PROTECTION',
-    title: 'Smart Blue',
-    highlight: 'Shield.',
-    badge: 'Anti-Fatigue Filter',
-    desc: 'Block 99% harmful screen blue light without yellow tint distortion. Perfect for long working hours.',
+    tag: 'DIGITAL SCREEN ARMOR',
+    title: 'Next-Gen',
+    highlight: 'Blue Filter.',
+    badge: 'Anti-Fatigue Certified',
+    desc: 'Block 99% harmful blue rays from monitors and smartphones with distortion-free, crystal clarity lenses.',
     image:
-      'https://images.unsplash.com/photo-1591076482161-42ce6da69f67?q=80&w=2000&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1577803645773-f96470509666?q=80&w=2000&auto=format&fit=crop',
     link: '/shop/computer',
     btnText: 'Shop Blue Cut',
   },
   {
     id: 'banner-4',
-    tag: 'PATIALA FLAGSHIP SHOWROOM',
+    tag: 'FLAGSHIP SHOWROOM PATIALA',
     title: 'Bespoke',
-    highlight: 'Eye Styling.',
-    badge: 'Free Computerised Exam',
-    desc: 'Experience luxury eyewear styling, computerized power checkups, and instant frame fitting at our Patiala studio.',
+    highlight: 'Studio Styling.',
+    badge: 'Free Optometrist Exam',
+    desc: 'Experience luxury eyewear fitting, instant precision lens edging, and computerized eye exams at our Patiala studio.',
     image:
-      'https://images.unsplash.com/photo-1556740758-90de374c12ad?q=80&w=2000&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1509695507497-903c140c43b0?q=80&w=2000&auto=format&fit=crop',
     link: '/store',
     btnText: 'Visit Patiala Store',
   },
@@ -156,8 +145,8 @@ export default function Home() {
           <div
             key={banner.id}
             className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${currentSlide === index
-                ? 'opacity-100 z-10'
-                : 'opacity-0 z-0 pointer-events-none'
+              ? 'opacity-100 z-10'
+              : 'opacity-0 z-0 pointer-events-none'
               }`}
           >
             {/* Background High-res Image */}
@@ -166,7 +155,8 @@ export default function Home() {
               alt={banner.title}
               fill
               className="object-cover object-center transform scale-105 transition-transform duration-10000 ease-out"
-              priority={index === 0}
+              priority
+              unoptimized
             />
 
             {/* Gradient Overlay for Crisp Text Contrast */}
@@ -253,8 +243,8 @@ export default function Home() {
               onClick={() => setCurrentSlide(i)}
               aria-label={`Go to slide ${i + 1}`}
               className={`h-2.5 rounded-full transition-all duration-500 ${currentSlide === i
-                  ? 'w-12 bg-amber-400 shadow-lg shadow-amber-400/50'
-                  : 'w-3 bg-white/40 hover:bg-white/70'
+                ? 'w-12 bg-amber-400 shadow-lg shadow-amber-400/50'
+                : 'w-3 bg-white/40 hover:bg-white/70'
                 }`}
             />
           ))}
