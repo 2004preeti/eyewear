@@ -111,8 +111,8 @@ export default async function CategoryPage({
                 key={catItem.slug}
                 href={`/shop/${catItem.slug}`}
                 className={`px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-all duration-300 shadow-sm ${isActive
-                    ? 'bg-slate-950 text-white shadow-md'
-                    : 'bg-white text-slate-700 hover:bg-amber-50 hover:text-slate-950 border border-slate-200/80'
+                  ? 'bg-slate-950 text-white shadow-md'
+                  : 'bg-white text-slate-700 hover:bg-amber-50 hover:text-slate-950 border border-slate-200/80'
                   }`}
               >
                 {catItem.label}

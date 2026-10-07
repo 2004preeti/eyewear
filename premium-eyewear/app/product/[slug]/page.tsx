@@ -172,7 +172,7 @@ export default function ProductDetailPage({
       {/* 🌟 MAIN PRODUCT CONTAINER */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 bg-white rounded-3xl p-6 sm:p-10 shadow-xl shadow-slate-200/50 border border-slate-200/80">
-          
+
           {/* 📸 LEFT GALLERY: 7 COLUMNS */}
           <div className="lg:col-span-7 flex flex-col gap-5">
             {/* Main Stage Image: Perfect Frame Display (No Cutoff on Mobile) */}
@@ -200,11 +200,10 @@ export default function ProductDetailPage({
               <div className="absolute top-4 right-4 flex items-center gap-2 z-20">
                 <button
                   onClick={() => setIsWishlisted(!isWishlisted)}
-                  className={`p-3 rounded-full backdrop-blur-md transition-all shadow-sm ${
-                    isWishlisted
+                  className={`p-3 rounded-full backdrop-blur-md transition-all shadow-sm ${isWishlisted
                       ? 'bg-rose-50 text-rose-500 border border-rose-200'
                       : 'bg-white/90 text-slate-700 hover:text-rose-500 border border-slate-200/80 hover:bg-white'
-                  }`}
+                    }`}
                   title="Wishlist"
                 >
                   <Heart className={`w-5 h-5 ${isWishlisted ? 'fill-rose-500' : ''}`} />
@@ -237,11 +236,10 @@ export default function ProductDetailPage({
                     <button
                       key={index}
                       onClick={() => setSelectedImage(img)}
-                      className={`relative flex-shrink-0 w-18 h-18 sm:w-24 sm:h-24 rounded-2xl overflow-hidden bg-slate-100 border-2 transition-all p-1.5 flex items-center justify-center ${
-                        isActive
+                      className={`relative flex-shrink-0 w-18 h-18 sm:w-24 sm:h-24 rounded-2xl overflow-hidden bg-slate-100 border-2 transition-all p-1.5 flex items-center justify-center ${isActive
                           ? 'border-slate-950 ring-2 ring-slate-950/20 scale-95 shadow-sm'
                           : 'border-slate-200/80 hover:border-slate-400 opacity-75 hover:opacity-100'
-                      }`}
+                        }`}
                     >
                       <img
                         src={img}
@@ -469,31 +467,28 @@ export default function ProductDetailPage({
           <div className="flex border-b border-slate-200 gap-4 sm:gap-8 overflow-x-auto pb-1">
             <button
               onClick={() => setActiveTab('overview')}
-              className={`pb-4 text-sm sm:text-base font-bold transition-all border-b-2 flex-shrink-0 ${
-                activeTab === 'overview'
+              className={`pb-4 text-sm sm:text-base font-bold transition-all border-b-2 flex-shrink-0 ${activeTab === 'overview'
                   ? 'border-amber-500 text-slate-950'
                   : 'border-transparent text-slate-400 hover:text-slate-700'
-              }`}
+                }`}
             >
               Why Choose This Frame
             </button>
             <button
               onClick={() => setActiveTab('specs')}
-              className={`pb-4 text-sm sm:text-base font-bold transition-all border-b-2 flex-shrink-0 ${
-                activeTab === 'specs'
+              className={`pb-4 text-sm sm:text-base font-bold transition-all border-b-2 flex-shrink-0 ${activeTab === 'specs'
                   ? 'border-amber-500 text-slate-950'
                   : 'border-transparent text-slate-400 hover:text-slate-700'
-              }`}
+                }`}
             >
               Frame Specifications
             </button>
             <button
               onClick={() => setActiveTab('shipping')}
-              className={`pb-4 text-sm sm:text-base font-bold transition-all border-b-2 flex-shrink-0 ${
-                activeTab === 'shipping'
+              className={`pb-4 text-sm sm:text-base font-bold transition-all border-b-2 flex-shrink-0 ${activeTab === 'shipping'
                   ? 'border-amber-500 text-slate-950'
                   : 'border-transparent text-slate-400 hover:text-slate-700'
-              }`}
+                }`}
             >
               Shipping & Returns
             </button>
