@@ -371,11 +371,11 @@ export default function Home() {
           </div>
 
           {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-8">
               {[1, 2, 3, 4, 5, 6].map((n) => (
                 <div
                   key={`skeleton-${n}`}
-                  className="h-96 rounded-3xl bg-slate-200/70 animate-pulse border border-slate-200"
+                  className="h-64 sm:h-96 rounded-2xl sm:rounded-3xl bg-slate-200/70 animate-pulse border border-slate-200"
                 />
               ))}
             </div>
@@ -386,37 +386,40 @@ export default function Home() {
               <p className="text-slate-400 text-xs mt-1">Please check back soon or visit our store.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-8">
               {products.slice(0, 6).map((product, idx) => {
                 const imageUrl =
                   product.images && product.images.length > 0
                     ? product.images[0]
                     : '/placeholder.jpg';
 
-                const productKey = product.id || product.slug || `prod-${idx}`;
+                const productKey = product.id
+                  ? `home-prod-${product.id}`
+                  : `home-prod-${product.slug || 'frame'}-${idx}`;
                 const originalPrice = Math.round(Number(product.price) * 1.85);
 
                 return (
-                  <div
+                  <Link
                     key={productKey}
-                    className="group relative bg-white border border-slate-200/80 rounded-3xl overflow-hidden hover:shadow-2xl hover:border-slate-300 transition-all duration-300 flex flex-col justify-between"
+                    href={`/product/${product.slug}`}
+                    className="group relative bg-white border border-slate-200/80 rounded-2xl sm:rounded-3xl overflow-hidden hover:shadow-2xl hover:border-slate-300 transition-all duration-300 flex flex-col justify-between cursor-pointer"
                   >
                     {/* Floating Audience / Category Tags */}
-                    <div className="absolute top-4 left-4 z-10 flex gap-2">
+                    <div className="absolute top-2 left-2 sm:top-4 sm:left-4 z-10 flex flex-wrap gap-1 sm:gap-2">
                       {product.audience && (
-                        <span className="bg-slate-950/90 backdrop-blur-md text-amber-300 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">
+                        <span className="bg-slate-950/90 backdrop-blur-md text-amber-300 text-[8px] sm:text-[10px] font-black px-2 py-0.5 sm:px-3 sm:py-1 rounded-full uppercase tracking-wider shadow-sm">
                           {product.audience}
                         </span>
                       )}
                       {product.category && (
-                        <span className="bg-white/90 backdrop-blur-md text-slate-800 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider border border-slate-200/70">
+                        <span className="bg-white/90 backdrop-blur-md text-slate-800 text-[8px] sm:text-[10px] font-bold px-1.5 py-0.5 sm:px-2.5 sm:py-1 rounded-full uppercase tracking-wider border border-slate-200/70 hidden sm:inline-block">
                           {product.category}
                         </span>
                       )}
                     </div>
 
-                    {/* Image Stage: Perfect Responsive Display (No Cutoff on Mobile) */}
-                    <div className="w-full aspect-[4/3] sm:aspect-square bg-slate-100 relative overflow-hidden flex items-center justify-center p-4 sm:p-6 rounded-2xl border border-slate-200/60">
+                    {/* Image Stage */}
+                    <div className="w-full aspect-[4/3] sm:aspect-square bg-slate-100 relative overflow-hidden flex items-center justify-center p-2.5 sm:p-6 rounded-xl sm:rounded-2xl border border-slate-200/60">
                       <img
                         src={imageUrl}
                         alt={product.name || 'Eyewear Frame'}
@@ -425,42 +428,40 @@ export default function Home() {
                     </div>
 
                     {/* Card Content */}
-                    <div className="p-6 flex flex-col gap-3 flex-1 justify-between bg-white">
+                    <div className="p-3 sm:p-5 flex flex-col gap-1.5 sm:gap-2 flex-1 justify-between bg-white">
                       <div>
-                        <h3 className="text-lg font-black text-slate-900 group-hover:text-amber-600 transition-colors line-clamp-1">
+                        <h3 className="text-xs sm:text-base font-black text-slate-900 group-hover:text-amber-600 transition-colors line-clamp-1">
                           {product.name}
                         </h3>
-                        <p className="text-slate-500 text-xs line-clamp-2 mt-1 leading-relaxed">
+                        <p className="text-slate-500 text-xs line-clamp-2 mt-1 leading-relaxed hidden sm:block">
                           {product.description || 'Premium eyewear frame.'}
                         </p>
                       </div>
 
                       {/* Pricing & CTA */}
-                      <div className="pt-4 flex justify-between items-center border-t border-slate-100 mt-2">
-                        <div>
-                          <div className="flex items-baseline gap-2">
-                            <span className="text-xl sm:text-2xl font-black text-slate-950">
+                      <div className="pt-2 border-t border-slate-100 mt-1">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-baseline gap-1 sm:gap-1.5">
+                            <span className="text-sm sm:text-xl font-black text-slate-950">
                               ₹{product.price}
                             </span>
-                            <span className="text-xs font-semibold text-slate-400 line-through">
+                            <span className="text-[10px] sm:text-xs font-semibold text-slate-400 line-through">
                               ₹{originalPrice}
                             </span>
                           </div>
-                          <span className="text-[10px] font-extrabold text-emerald-600">
+                          <span className="text-[9px] sm:text-[10px] font-extrabold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200/80">
                             In Stock
                           </span>
                         </div>
 
-                        <Link
-                          href={`/product/${product.slug}`}
-                          className="bg-slate-950 hover:bg-amber-500 hover:text-slate-950 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider transition-all duration-300 shadow-md active:scale-95 flex items-center gap-1"
-                        >
+                        {/* Premium Sleek View Button */}
+                        <div className="mt-2.5 w-full py-2 px-3 rounded-xl bg-slate-950 group-hover:bg-amber-500 text-white group-hover:text-slate-950 font-bold text-[11px] sm:text-xs flex items-center justify-center gap-1.5 transition-all duration-300 shadow-sm">
                           <span>View Frame</span>
-                          <ChevronRight className="w-3.5 h-3.5" />
-                        </Link>
+                          <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  </Link>
                 );
               })}
             </div>

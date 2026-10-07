@@ -13,7 +13,8 @@ export async function PUT(
 
     const queryId = !isNaN(Number(id)) ? Number(id) : id;
 
-    const { data, error } = await supabase
+    // 1. Try updating by id
+    let { data, error } = await supabase
       .from('products')
       .update({
         name,
@@ -26,6 +27,28 @@ export async function PUT(
       })
       .eq('id', queryId)
       .select();
+
+    // 2. If 'id' column fails or no rows updated, try matching with 'slug'
+    if ((error || !data || data.length === 0) && id) {
+      const fallback = await supabase
+        .from('products')
+        .update({
+          name,
+          price: Number(price),
+          description,
+          images,
+          slug,
+          category,
+          audience: audience || 'all',
+        })
+        .eq('slug', id)
+        .select();
+
+      if (!fallback.error && fallback.data && fallback.data.length > 0) {
+        data = fallback.data;
+        error = null;
+      }
+    }
 
     if (error) {
       console.error('Supabase PUT Error:', error.message);

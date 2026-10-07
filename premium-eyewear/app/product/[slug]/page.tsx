@@ -602,39 +602,39 @@ export default function ProductDetailPage({
               </Link>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {relatedProducts.map((item: any) => {
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+              {relatedProducts.map((item: any, idx: number) => {
                 const img =
                   item.images && item.images.length > 0
                     ? item.images[0]
                     : '/placeholder.jpg';
                 return (
                   <Link
-                    key={item.slug || item.name}
+                    key={item.id ? `related-${item.id}` : `related-${item.slug || item.name}-${idx}`}
                     href={`/product/${item.slug}`}
-                    className="group bg-white rounded-3xl p-4 border border-slate-200/80 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
+                    className="group bg-white rounded-2xl sm:rounded-3xl p-2.5 sm:p-4 border border-slate-200/80 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
                   >
-                    <div className="w-full aspect-[4/3] sm:aspect-square bg-slate-100 rounded-2xl overflow-hidden mb-4 flex items-center justify-center p-3 relative border border-slate-200/60">
+                    <div className="w-full aspect-[4/3] sm:aspect-square bg-slate-100 rounded-xl sm:rounded-2xl overflow-hidden mb-2 sm:mb-4 flex items-center justify-center p-2 sm:p-3 relative border border-slate-200/60">
                       <img
                         src={img}
                         alt={item.name}
                         className="w-full h-full object-contain filter drop-shadow-sm group-hover:scale-105 transition-transform duration-300"
                       />
                       {item.category && (
-                        <span className="absolute top-3 left-3 bg-white/90 backdrop-blur-md text-[10px] font-bold text-slate-800 px-2.5 py-1 rounded-full uppercase border border-slate-200/80">
+                        <span className="absolute top-2 left-2 sm:top-3 sm:left-3 bg-white/90 backdrop-blur-md text-[8px] sm:text-[10px] font-bold text-slate-800 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full uppercase border border-slate-200/80">
                           {item.category}
                         </span>
                       )}
                     </div>
                     <div>
-                      <h3 className="font-bold text-slate-900 group-hover:text-amber-600 transition-colors text-base line-clamp-1 mb-1">
+                      <h3 className="font-bold text-slate-900 group-hover:text-amber-600 transition-colors text-xs sm:text-base line-clamp-1 mb-1">
                         {item.name}
                       </h3>
-                      <div className="flex items-center justify-between mt-2">
-                        <span className="text-lg font-black text-slate-900">
+                      <div className="flex items-center justify-between mt-1 sm:mt-2">
+                        <span className="text-sm sm:text-lg font-black text-slate-900">
                           ₹{item.price}
                         </span>
-                        <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
+                        <span className="text-[9px] sm:text-xs font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 sm:px-2 sm:py-0.5 rounded-md border border-emerald-200">
                           In Stock
                         </span>
                       </div>

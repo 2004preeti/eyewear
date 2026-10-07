@@ -28,19 +28,17 @@ export default function AdminPage() {
   });
 
   const [loading, setLoading] = useState(false);
-  const [imageFiles, setImageFiles] = useState<string[]>([]);
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
   const [products, setProducts] = useState<any[]>([]);
   const [fetching, setFetching] = useState(true);
 
   // 1. Live Products Fetch Karein
   const fetchProducts = async () => {
     try {
-      const res = await fetch(
-        '/api/products',
-        {
-          cache: 'no-store',
-        },
-      );
+      const res = await fetch('/api/products', {
+        cache: 'no-store',
+      });
       if (res.ok) {
         const data = await res.json();
         setProducts(data);
@@ -73,55 +71,25 @@ export default function AdminPage() {
     });
   };
 
-  const compressImage = (file: File): Promise<string> => {
-    return new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const img = new window.Image();
-        img.onload = () => {
-          const maxDim = 800;
-          let { width, height } = img;
-          if (width > height && width > maxDim) {
-            height = Math.round((height * maxDim) / width);
-            width = maxDim;
-          } else if (height > maxDim) {
-            width = Math.round((width * maxDim) / height);
-            height = maxDim;
-          }
-          const canvas = document.createElement('canvas');
-          canvas.width = width;
-          canvas.height = height;
-          const ctx = canvas.getContext('2d');
-          if (ctx) {
-            ctx.drawImage(img, 0, 0, width, height);
-            resolve(canvas.toDataURL('image/webp', 0.8));
-          } else {
-            resolve(e.target?.result as string);
-          }
-        };
-        img.onerror = () => resolve(e.target?.result as string);
-        img.src = e.target?.result as string;
-      };
-      reader.readAsDataURL(file);
-    });
-  };
-
-  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
-    if (files) {
+    if (files && files.length > 0) {
       const fileArray = Array.from(files);
-      const compressedImages = await Promise.all(
-        fileArray.map((file) => compressImage(file))
-      );
-      setImageFiles((prev) => [...prev, ...compressedImages]);
+      setSelectedFiles((prev) => [...prev, ...fileArray]);
+      const newPreviews = fileArray.map((file) => URL.createObjectURL(file));
+      setPreviewUrls((prev) => [...prev, ...newPreviews]);
     }
   };
 
   const removeImage = (index: number) => {
-    setImageFiles((prev) => prev.filter((_, i) => i !== index));
+    setSelectedFiles((prev) => prev.filter((_, i) => i !== index));
+    setPreviewUrls((prev) => {
+      URL.revokeObjectURL(prev[index]);
+      return prev.filter((_, i) => i !== index);
+    });
   };
 
-  // 2. Submit New Product
+  // 2. Submit New Product with Super Fast File Upload
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -130,51 +98,70 @@ export default function AdminPage() {
       return;
     }
 
-    if (imageFiles.length === 0) {
+    if (selectedFiles.length === 0) {
       alert('Kripya kam se kam ek product image upload karein!');
       return;
     }
 
     setLoading(true);
 
-    const productData = {
-      ...formData,
-      price: Number(formData.price),
-      images: imageFiles,
-    };
-
     try {
-      const res = await fetch(
-        '/api/products',
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(productData),
-        },
-      );
+      // 1. Instant File Upload to /api/upload
+      const uploadFormData = new FormData();
+      selectedFiles.forEach((file) => {
+        uploadFormData.append('files', file);
+      });
+
+      const uploadRes = await fetch('/api/upload', {
+        method: 'POST',
+        body: uploadFormData,
+      });
+
+      if (!uploadRes.ok) {
+        const uploadErr = await uploadRes.json();
+        throw new Error(uploadErr.error || 'Failed to upload images');
+      }
+
+      const { urls } = await uploadRes.json();
+
+      // 2. Save Product with Clean Fast URLs
+      const productData = {
+        ...formData,
+        price: Number(formData.price),
+        images: urls,
+      };
+
+      const res = await fetch('/api/products', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(productData),
+      });
 
       const responseData = await res.json();
 
       if (res.ok) {
-        alert('🎉 Product Added Successfully!');
+        alert('🎉 Product Added Successfully (Super Fast)!');
         setFormData({
           name: '',
           price: '',
           description: '',
           slug: '',
           category: '',
-          audience: 'gender',
+          audience: 'unisex',
         });
-        setImageFiles([]);
+        setSelectedFiles([]);
+        setPreviewUrls([]);
+        const fileInput = document.getElementById('image-file-input') as HTMLInputElement | null;
+        if (fileInput) fileInput.value = '';
         fetchProducts();
       } else {
         alert(
           `Failed to add product: ${responseData.error || 'Unknown Error'}`,
         );
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
-      alert('Network Error! Backend server running hai ya nahi check karein.');
+      alert(error.message || 'Error occurred while saving product.');
     } finally {
       setLoading(false);
     }
@@ -355,6 +342,7 @@ export default function AdminPage() {
                 Upload Product Images
               </label>
               <input
+                id="image-file-input"
                 type="file"
                 accept="image/*"
                 multiple
@@ -364,9 +352,9 @@ export default function AdminPage() {
             </div>
 
             {/* Previews */}
-            {imageFiles.length > 0 && (
+            {previewUrls.length > 0 && (
               <div className="flex gap-3 overflow-x-auto py-2">
-                {imageFiles.map((img, index) => (
+                {previewUrls.map((img, index) => (
                   <div key={index} className="relative group">
                     <img
                       src={img}
@@ -419,7 +407,9 @@ export default function AdminPage() {
           ) : (
             <div className="divide-y divide-gray-100 max-h-[500px] overflow-y-auto pr-2">
               {products.map((item: any, index: number) => {
-                const keyId = item.id || item._id || item.slug || index;
+                const keyId = item.id || item._id
+                  ? `admin-${item.id || item._id}`
+                  : `admin-${item.slug || 'prod'}-${index}`;
                 const thumb =
                   item.images && item.images.length > 0
                     ? item.images[0]

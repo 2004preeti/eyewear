@@ -212,9 +212,9 @@ export default function Navbar() {
                 </div>
                 {searchResults.length > 0 ? (
                   <div className="divide-y divide-slate-100">
-                    {searchResults.map((item) => (
+                    {searchResults.map((item, idx) => (
                       <Link
-                        key={item.id || item.slug}
+                        key={item.id ? `nav-search-${item.id}` : `nav-search-${item.slug || 'item'}-${idx}`}
                         href={`/product/${item.slug}`}
                         onClick={() => setShowSearchDropdown(false)}
                         className="flex items-center gap-3 p-2.5 hover:bg-amber-50/80 rounded-2xl transition-all group"
@@ -309,9 +309,9 @@ export default function Navbar() {
             <div className="mt-2 w-full bg-white border border-slate-200 rounded-2xl shadow-xl overflow-hidden max-h-[280px] overflow-y-auto">
               {searchResults.length > 0 ? (
                 <div className="p-2 divide-y divide-slate-100">
-                  {searchResults.map((item) => (
+                  {searchResults.map((item, idx) => (
                     <Link
-                      key={item.id || item.slug}
+                      key={item.id ? `nav-mob-search-${item.id}` : `nav-mob-search-${item.slug || 'item'}-${idx}`}
                       href={`/product/${item.slug}`}
                       onClick={() => {
                         setShowSearchDropdown(false);
