@@ -148,7 +148,7 @@ export default async function CategoryPage({
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-8">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
             {products.map((product: any, idx: number) => {
               const imageUrl =
                 product.images && product.images.length > 0
@@ -164,62 +164,57 @@ export default async function CategoryPage({
                 <Link
                   key={uniqueKey}
                   href={`/product/${product.slug}`}
-                  className="group relative bg-white border border-slate-200/80 rounded-2xl sm:rounded-3xl overflow-hidden hover:shadow-2xl hover:border-slate-300 transition-all duration-300 flex flex-col justify-between cursor-pointer"
+                  className="group relative bg-white border border-slate-200/80 rounded-xl sm:rounded-2xl overflow-hidden hover:shadow-xl hover:border-slate-300 transition-all duration-300 flex flex-col justify-between cursor-pointer"
                 >
-                  {/* Image Showcase */}
-                  <div className="w-full aspect-[4/3] sm:aspect-square bg-slate-100 relative overflow-hidden flex items-center justify-center p-2.5 sm:p-6 rounded-xl sm:rounded-2xl border border-slate-200/60">
+                  {/* Floating Audience / Category Tags */}
+                  <div className="absolute top-1.5 left-1.5 sm:top-2.5 sm:left-2.5 flex flex-wrap gap-1 z-10">
+                    {product.audience && (
+                      <span className="bg-slate-950/90 text-amber-300 text-[7px] sm:text-[9px] font-black px-1.5 py-0.5 sm:px-2 sm:py-0.5 rounded-full uppercase tracking-wider shadow-sm">
+                        {product.audience}
+                      </span>
+                    )}
+                    {product.category && (
+                      <span className="bg-white/90 text-slate-800 text-[7px] sm:text-[9px] font-bold px-1.5 py-0.5 rounded-full uppercase tracking-wider border border-slate-200/70 hidden sm:inline-block">
+                        {product.category}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Image Showcase - Big & Clear Product Image */}
+                  <div className="w-full aspect-[4/3] sm:aspect-square bg-slate-100 relative overflow-hidden flex items-center justify-center p-2.5 sm:p-5 rounded-xl sm:rounded-2xl border border-slate-200/60">
                     <img
                       src={imageUrl}
                       alt={product.name}
-                      className="w-full h-full object-contain filter drop-shadow-sm group-hover:scale-105 transition-transform duration-500 ease-out"
+                      className="w-full h-full object-contain filter drop-shadow-sm group-hover:scale-105 transition-transform duration-300 ease-out"
                     />
-
-                    {/* Tags */}
-                    <div className="absolute top-2 left-2 sm:top-4 sm:left-4 flex flex-wrap gap-1 sm:gap-2">
-                      {product.audience && (
-                        <span className="bg-slate-950/90 text-amber-300 text-[8px] sm:text-[10px] font-black px-2 py-0.5 sm:px-3 sm:py-1 rounded-full uppercase tracking-wider shadow-sm">
-                          {product.audience}
-                        </span>
-                      )}
-                      {product.category && (
-                        <span className="bg-white/90 text-slate-800 text-[8px] sm:text-[10px] font-bold px-1.5 py-0.5 sm:px-2.5 sm:py-1 rounded-full uppercase tracking-wider border border-slate-200/70 hidden sm:inline-block">
-                          {product.category}
-                        </span>
-                      )}
-                    </div>
                   </div>
 
-                  {/* Card Content */}
-                  <div className="p-3 sm:p-5 flex flex-col gap-1.5 sm:gap-2 flex-1 justify-between bg-white">
-                    <div>
-                      <h3 className="text-xs sm:text-base font-black text-slate-900 group-hover:text-amber-600 transition-colors line-clamp-1">
-                        {product.name}
-                      </h3>
-                      <p className="text-slate-500 text-xs line-clamp-2 mt-1 leading-relaxed hidden sm:block">
-                        {product.description || 'Hand-crafted premium frame.'}
-                      </p>
-                    </div>
+                  {/* Card Content - Compact Bottom Area */}
+                  <div className="p-2.5 sm:p-3 flex flex-col gap-1 bg-white">
+                    <h3 className="text-xs sm:text-sm font-bold text-slate-900 group-hover:text-amber-600 transition-colors line-clamp-1">
+                      {product.name}
+                    </h3>
 
-                    {/* Price & CTA */}
-                    <div className="pt-2 border-t border-slate-100 mt-1">
-                      <div className="flex items-center justify-between">
+                    {/* Pricing & Inline View Button in One Compact Row */}
+                    <div className="pt-1.5 flex items-center justify-between border-t border-slate-100">
+                      <div>
                         <div className="flex items-baseline gap-1 sm:gap-1.5">
-                          <span className="text-sm sm:text-xl font-black text-slate-950">
+                          <span className="text-sm sm:text-base font-black text-slate-950">
                             ₹{product.price}
                           </span>
                           <span className="text-[10px] sm:text-xs font-semibold text-slate-400 line-through">
                             ₹{originalPrice}
                           </span>
                         </div>
-                        <span className="text-[9px] sm:text-[10px] font-extrabold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200/80">
+                        <span className="text-[9px] font-bold text-emerald-600 block">
                           In Stock
                         </span>
                       </div>
 
-                      {/* Premium Sleek View Button */}
-                      <div className="mt-2.5 w-full py-2 px-3 rounded-xl bg-slate-950 group-hover:bg-amber-500 text-white group-hover:text-slate-950 font-bold text-[11px] sm:text-xs flex items-center justify-center gap-1.5 transition-all duration-300 shadow-sm">
-                        <span>View Frame</span>
-                        <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                      {/* Sleek Compact View Button (Inline, saves card height) */}
+                      <div className="bg-slate-950 group-hover:bg-amber-500 text-white group-hover:text-slate-950 px-2.5 py-1.5 rounded-lg text-[10px] sm:text-xs font-bold transition-all duration-300 shadow-sm flex items-center gap-1 shrink-0">
+                        <span>View</span>
+                        <ChevronRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
                       </div>
                     </div>
                   </div>
