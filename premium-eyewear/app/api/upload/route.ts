@@ -1,13 +1,12 @@
 import { NextResponse } from 'next/server';
-import { writeFile, mkdir } from 'fs/promises';
-import path from 'path';
+import { supabase } from '@/lib/supabase';
 
 export async function POST(req: Request) {
   try {
     const formData: any = await req.formData();
     // Accept either 'files', 'images', or single 'file'
     const rawFiles: any[] = [];
-    
+
     if (typeof formData.getAll === 'function') {
       rawFiles.push(...formData.getAll('files'));
       rawFiles.push(...formData.getAll('images'));
@@ -30,9 +29,6 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
-
-    const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
-    await mkdir(uploadsDir, { recursive: true });
 
     const uploadedUrls: string[] = [];
 
@@ -57,10 +53,59 @@ export async function POST(req: Request) {
 
       const uniqueSuffix = `${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
       const fileName = `${safeBaseName || 'product'}-${uniqueSuffix}${ext}`;
-      const filePath = path.join(uploadsDir, fileName);
+      const contentType =
+        file.type ||
+        (ext === '.png'
+          ? 'image/png'
+          : ext === '.webp'
+          ? 'image/webp'
+          : ext === '.svg'
+          ? 'image/svg+xml'
+          : 'image/jpeg');
 
-      await writeFile(filePath, buffer);
-      uploadedUrls.push(`/uploads/${fileName}`);
+      // Upload directly to Supabase Storage bucket ('products')
+      const { data, error } = await supabase.storage
+        .from('products')
+        .upload(fileName, buffer, {
+          contentType,
+          upsert: true,
+        });
+
+      if (error) {
+        console.error('Supabase Storage Upload Error:', error);
+        if (
+          error.message?.toLowerCase().includes('bucket not found') ||
+          error.message?.toLowerCase().includes('not found')
+        ) {
+          return NextResponse.json(
+            {
+              error:
+                "Supabase Storage bucket 'products' not found. Please create a public bucket named 'products' in your Supabase Dashboard under Storage.",
+            },
+            { status: 500 }
+          );
+        }
+        return NextResponse.json(
+          { error: `Storage upload error: ${error.message}` },
+          { status: 500 }
+        );
+      }
+
+      // Get public URL for the uploaded file
+      const { data: publicUrlData } = supabase.storage
+        .from('products')
+        .getPublicUrl(fileName);
+
+      if (publicUrlData?.publicUrl) {
+        uploadedUrls.push(publicUrlData.publicUrl);
+      }
+    }
+
+    if (uploadedUrls.length === 0) {
+      return NextResponse.json(
+        { error: 'Failed to generate uploaded image URLs' },
+        { status: 500 }
+      );
     }
 
     return NextResponse.json(
@@ -78,3 +123,4 @@ export async function POST(req: Request) {
     );
   }
 }
+
