@@ -102,9 +102,7 @@ export default function Home() {
   useEffect(() => {
     async function fetchLiveProducts() {
       try {
-        const res = await fetch('/api/products', {
-          cache: 'no-store',
-        });
+        const res = await fetch('/api/products');
         if (res.ok) {
           const data = await res.json();
           if (Array.isArray(data)) {

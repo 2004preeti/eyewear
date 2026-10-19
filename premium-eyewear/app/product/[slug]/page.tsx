@@ -40,27 +40,32 @@ export default function ProductDetailPage({
   useEffect(() => {
     async function fetchProduct() {
       try {
-        const res = await fetch('/api/products', {
-          cache: 'no-store',
-        });
+        // 1. Fast Single Product Query
+        const res = await fetch(`/api/products?slug=${encodeURIComponent(slug)}`);
         if (res.ok) {
-          const products: any[] = await res.json();
-          const found = products.find((item: any) => item.slug === slug);
-          if (found) {
+          const found = await res.json();
+          if (found && !found.error) {
             setProduct(found);
             const firstImg =
               found.images && found.images.length > 0
                 ? found.images[0]
                 : '/placeholder.jpg';
             setSelectedImage(firstImg);
-
-            // Related products (same category or others, excluding current)
-            const related = products
-              .filter((item: any) => item.slug !== slug)
-              .slice(0, 4);
-            setRelatedProducts(related);
           }
         }
+
+        // 2. Load related products in background (cached)
+        fetch('/api/products')
+          .then((r) => r.json())
+          .then((all) => {
+            if (Array.isArray(all)) {
+              const related = all
+                .filter((item: any) => item.slug !== slug)
+                .slice(0, 4);
+              setRelatedProducts(related);
+            }
+          })
+          .catch(() => {});
       } catch (error) {
         console.error('Error fetching product:', error);
       } finally {

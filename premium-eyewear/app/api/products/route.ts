@@ -80,17 +80,52 @@ const fallbackProducts = [
   }
 ];
 
-// GET all products
-export async function GET() {
+// GET products (supports ?slug= for single product, and CDN caching)
+export async function GET(req: Request) {
   try {
+    const { searchParams } = new URL(req.url);
+    const slug = searchParams.get('slug');
+
+    // Fast Single Product Query
+    if (slug) {
+      const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .eq('slug', slug)
+        .maybeSingle();
+
+      if (data && !error) {
+        return NextResponse.json(data, {
+          status: 200,
+          headers: {
+            'Cache-Control': 'public, s-maxage=30, stale-while-revalidate=120',
+          },
+        });
+      }
+
+      // Check fallback products for slug
+      const fallbackItem = fallbackProducts.find((p) => p.slug === slug);
+      if (fallbackItem) {
+        return NextResponse.json(fallbackItem, { status: 200 });
+      }
+
+      return NextResponse.json({ error: 'Product not found' }, { status: 404 });
+    }
+
+    // Full catalog query with CDN caching
     const { data, error } = await supabase.from('products').select('*');
-    
+
     if (error || !data || data.length === 0) {
       console.warn('Supabase not responding or empty, using fallback backup products:', error?.message);
       return NextResponse.json(fallbackProducts, { status: 200 });
     }
-    
-    return NextResponse.json(data, { status: 200 });
+
+    return NextResponse.json(data, {
+      status: 200,
+      headers: {
+        'Cache-Control': 'public, s-maxage=30, stale-while-revalidate=120',
+      },
+    });
   } catch (error: any) {
     console.error('Server GET Error, using fallback backup:', error);
     return NextResponse.json(fallbackProducts, { status: 200 });
