@@ -63,42 +63,37 @@ export async function POST(req: Request) {
           ? 'image/svg+xml'
           : 'image/jpeg');
 
-      // Upload directly to Supabase Storage bucket ('products')
-      const { data, error } = await supabase.storage
-        .from('products')
-        .upload(fileName, buffer, {
-          contentType,
-          upsert: true,
-        });
+      // Try uploading directly to Supabase Storage bucket ('products')
+      let publicUrl: string | null = null;
+      try {
+        const { data, error } = await supabase.storage
+          .from('products')
+          .upload(fileName, buffer, {
+            contentType,
+            upsert: true,
+          });
 
-      if (error) {
-        console.error('Supabase Storage Upload Error:', error);
-        if (
-          error.message?.toLowerCase().includes('bucket not found') ||
-          error.message?.toLowerCase().includes('not found')
-        ) {
-          return NextResponse.json(
-            {
-              error:
-                "Supabase Storage bucket 'products' not found. Please create a public bucket named 'products' in your Supabase Dashboard under Storage.",
-            },
-            { status: 500 }
-          );
+        if (!error) {
+          const { data: publicUrlData } = supabase.storage
+            .from('products')
+            .getPublicUrl(fileName);
+
+          if (publicUrlData?.publicUrl) {
+            publicUrl = publicUrlData.publicUrl;
+          }
+        } else {
+          console.warn('Supabase Storage upload warning:', error.message);
         }
-        return NextResponse.json(
-          { error: `Storage upload error: ${error.message}` },
-          { status: 500 }
-        );
+      } catch (uploadErr: any) {
+        console.warn('Supabase Storage connection failed:', uploadErr.message);
       }
 
-      // Get public URL for the uploaded file
-      const { data: publicUrlData } = supabase.storage
-        .from('products')
-        .getPublicUrl(fileName);
-
-      if (publicUrlData?.publicUrl) {
-        uploadedUrls.push(publicUrlData.publicUrl);
+      // Graceful Fallback: If Supabase Storage is paused or unreachable, use Base64 data URL
+      if (!publicUrl) {
+        publicUrl = `data:${contentType};base64,${buffer.toString('base64')}`;
       }
+
+      uploadedUrls.push(publicUrl);
     }
 
     if (uploadedUrls.length === 0) {
