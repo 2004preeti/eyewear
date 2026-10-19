@@ -50,6 +50,29 @@ export async function PUT(
       }
     }
 
+    // 3. If still not updated, try matching with 'name'
+    if ((error || !data || data.length === 0) && id) {
+      const decoded = decodeURIComponent(id);
+      const nameFallback = await supabase
+        .from('products')
+        .update({
+          name,
+          price: Number(price),
+          description,
+          images,
+          slug,
+          category,
+          audience: audience || 'all',
+        })
+        .eq('name', decoded)
+        .select();
+
+      if (!nameFallback.error && nameFallback.data && nameFallback.data.length > 0) {
+        data = nameFallback.data;
+        error = null;
+      }
+    }
+
     if (error) {
       console.error('Supabase PUT Error:', error.message);
       return NextResponse.json({ error: error.message }, { status: 400 });
@@ -92,6 +115,21 @@ export async function DELETE(
 
       if (!fallback.error && fallback.data && fallback.data.length > 0) {
         data = fallback.data;
+        error = null;
+      }
+    }
+
+    // 3. If 'id' and 'slug' failed, try matching with 'name'
+    if ((error || !data || data.length === 0) && id) {
+      const decoded = decodeURIComponent(id);
+      const nameFallback = await supabase
+        .from('products')
+        .delete()
+        .eq('name', decoded)
+        .select();
+
+      if (!nameFallback.error && nameFallback.data && nameFallback.data.length > 0) {
+        data = nameFallback.data;
         error = null;
       }
     }

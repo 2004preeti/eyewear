@@ -127,6 +127,18 @@ export async function POST(req: Request) {
 
     if (error) {
       console.error('Supabase POST Error:', error.message);
+      if (
+        error.code === '23505' ||
+        error.message?.includes('duplicate key') ||
+        error.message?.includes('products_pkey')
+      ) {
+        return NextResponse.json(
+          {
+            error: `Product with name "${name}" already exists! Please use a unique product name.`,
+          },
+          { status: 409 }
+        );
+      }
       return NextResponse.json({ error: error.message }, { status: 400 });
     }
 
